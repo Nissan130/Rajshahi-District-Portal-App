@@ -15,9 +15,11 @@ const InputComponent = ({
   icon,
   keyboardType = "default",
   iconPackage,
+  value, 
+  setValue,
 }: any) => {
   const [isFocused, setIsFocused] = useState(false);
-  const [value, setValue] = useState("");
+  // const [value, setValue] = useState("");
   const animatedLabel = useRef(new Animated.Value(value ? 1 : 0)).current;
 
   const handleFocus = () => {

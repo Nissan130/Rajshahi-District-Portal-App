@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   StatusBar,
   ScrollView,
+  Alert,
 } from "react-native";
 import { scale, verticalScale, moderateScale } from "react-native-size-matters";
 import { router } from "expo-router";
@@ -17,6 +18,29 @@ import PasswordComponent from "@/src/components/atoms/PasswordInput";
 
 const Register = () => {
   const [hidePassword, setHidePassword] = useState(true);
+  const [name, setName] = useState("");
+  const [number, setNumber] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [profession, setProfession] = useState("");
+  const [address, setAddress] = useState("");
+
+  // const data = {name,number, email};
+  // JSON.stringify(data);
+  // console.log(data);
+
+  //handle on click register
+  const onClickRegister = () => {
+    //validate form
+    if (!name || !number || !password || !email || !profession || !address) {
+      Alert.alert("Please fill all input fields");
+    } else {
+      const data = { name, number, password, email, profession, address };
+      const userData = JSON.stringify(data);
+      console.log(userData);
+    }
+  };
+
   const showPassword = () => {
     setHidePassword(!hidePassword);
   };
@@ -43,12 +67,20 @@ const Register = () => {
             icon="user"
             keyboardType="default"
             iconPackage="FontAwesome"
+            value={name}
+            setValue={(e: any) => {
+              setName(e);
+            }}
           />
           <InputComponent
             label="আপনার নাম্বার"
             icon="mobile"
             keyboardType="numeric"
             iconPackage="FontAwesome"
+            value={number}
+            setValue={(e: any) => {
+              setNumber(e);
+            }}
           />
           <PasswordComponent
             label="আপনার পাসওয়ার্ড"
@@ -57,28 +89,47 @@ const Register = () => {
             iconPackage="MaterialIcons"
             hidePassword={hidePassword}
             onPress={showPassword}
+            value={password}
+            setValue={(e: any) => {
+              setPassword(e);
+            }}
           />
           <InputComponent
             label="আপনার ই-মেইল"
             icon="email"
-            keyboardType="default"
+            keyboardType="email-address"
             iconPackage="MaterialIcons"
+            value={email}
+            setValue={(e: any) => {
+              setEmail(e);
+            }}
           />
           <InputComponent
             label="আপনার পেশা"
             icon="bag"
             keyboardType="default"
             iconPackage="SimpleLineIcons"
+            value={profession}
+            setValue={(e: any) => {
+              setProfession(e);
+            }}
           />
           <InputComponent
             label="আপনার ঠিকানা"
             icon="location-pin"
             keyboardType="default"
             iconPackage="SimpleLineIcons"
+            value={address}
+            setValue={(e: any) => {
+              setAddress(e);
+            }}
           />
 
           {/* Register Button */}
-          <ButtonComponent buttonText="রেজিস্ট্রেশন করুন" />
+          <ButtonComponent
+            buttonText="রেজিস্ট্রেশন করুন"
+            onPress={onClickRegister}
+          />
 
           {/* Login Link */}
           <Text style={styles.account_text}>

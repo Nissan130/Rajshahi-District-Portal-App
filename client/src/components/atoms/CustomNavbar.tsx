@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: moderateScale(25),
     fontWeight: "bold",
+    textTransform:'uppercase'
   },
   blueText: {
     color: "#2754cc",

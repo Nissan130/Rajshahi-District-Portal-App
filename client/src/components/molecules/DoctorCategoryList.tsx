@@ -9,16 +9,15 @@ import {
 import React from "react";
 import { moderateScale, scale, verticalScale } from "react-native-size-matters";
 import data from "@/src/assets/list_data";
-import { router, useNavigation } from "expo-router";
+import { router } from "expo-router";
 
-const HomeItemList = () => {
-  const navigation = useNavigation();
+const DoctorCategoryList = () => {
   const renderItem = ({ item }: any) => (
     <TouchableOpacity
       style={styles.card}
       activeOpacity={0.8}
       onPress={() => {
-       router.push(item.route);
+        router.push(item.route);
       }}
     >
       <Image source={item.image} style={styles.icon} />
@@ -38,7 +37,7 @@ const HomeItemList = () => {
   );
 };
 
-export default HomeItemList;
+export default DoctorCategoryList;
 
 const styles = StyleSheet.create({
   listContainer: {},

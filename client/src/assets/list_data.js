@@ -3,7 +3,7 @@ const data = [
     id: "1",
     title: "শিক্ষা প্রতিষ্ঠান",
     image: require("@/src/assets/images/educational_logo.png"),
-    route: "/screens/doctors",
+    route: "/screens/educationalInstitute",
   },
   {
     id: "2",
@@ -40,7 +40,7 @@ const data = [
   {
     id: "8",
     title: "রেস্টুরেন্ট",
-    image: require("@/src/assets/images/hotel.png"),
+    image: require("@/src/assets/images/restuarent.png"),
   },
   {
     id: "9",

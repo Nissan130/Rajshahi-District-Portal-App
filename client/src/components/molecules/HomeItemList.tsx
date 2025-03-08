@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   listContainer: {},
   row: {
     gap: scale(10),
-    paddingHorizontal: moderateScale(10),
+    paddingHorizontal: scale(10),
   },
   card: {
     backgroundColor: "#fff",

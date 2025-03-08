@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StatusBar,
   Image,
+  TextInput,
 } from "react-native";
 import React, { useState } from "react";
 import { moderateScale, scale, verticalScale } from "react-native-size-matters";
@@ -14,6 +15,7 @@ import { Feather, FontAwesome5, Ionicons } from "@expo/vector-icons";
 import FooterMenu from "@/src/components/molecules/FooterMenu";
 import CustomNavbar from "@/src/components/atoms/CustomNavbar";
 import HomeItemList from "@/src/components/molecules/HomeItemList";
+import SearchInput from "@/src/components/atoms/SearchInput";
 
 const Home = () => {
   const [currentPage, setCurrentPage] = useState("হোম");
@@ -22,6 +24,8 @@ const Home = () => {
       <StatusBar backgroundColor={"#2754cc"} barStyle={"light-content"} />
       <CustomNavbar />
 
+      <SearchInput placeholderText = "খুজুন ..." />  
+     
       <View style={styles.bodyContainer}>
           <HomeItemList />
       </View>

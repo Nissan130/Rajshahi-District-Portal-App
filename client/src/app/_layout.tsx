@@ -4,7 +4,7 @@ import { Redirect, Stack, useRouter } from "expo-router";
 
 const RootLayout = () => {
   const router = useRouter();
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
 
   useEffect(() => {
     if (isLogin) {

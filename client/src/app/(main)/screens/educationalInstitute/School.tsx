@@ -1,17 +1,16 @@
-import { View, Text, SafeAreaView, StyleSheet, Image, TouchableOpacity } from "react-native";
-import React from "react";
+import { View, Text, SafeAreaView, StyleSheet, Image, TouchableOpacity, FlatList } from "react-native";
+import React, { useState } from "react";
 import { moderateScale, scale, verticalScale } from "react-native-size-matters";
 import school_list from '@/src/assets/school_list'
 import SearchInput from "@/src/components/atoms/SearchInput";
 import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
+import AddItemIcon from "@/src/components/atoms/AddItemIcon";
+import AddEducationalInstitute from "@/src/components/molecules/AddEducationalInstitute";
 
 const School = () => {
-  return (
-    <View style={styles.container}>
-      <SearchInput placeholderText="স্কুল খুজুন ..." />
-      {school_list.map((item, index) => {
-        return (
-          <View style={styles.schoolContainer} key={index}>
+  const [openModal, setOpenModal] = useState(false);
+  const renderItem = ({item}:any)=> (
+     <View style={styles.schoolContainer} >
             <View style={styles.imageContainer}>
               <Image style={styles.image} source={item.image} />
             </View>
@@ -41,15 +40,23 @@ const School = () => {
               </View>
             </View>
           </View>
-        );
-      })}
+  );
+  return (
+    <View style={styles.container}>
+      <SearchInput placeholderText="স্কুল খুজুন ..." />
+      <FlatList data={school_list} renderItem={renderItem} numColumns={1} />
 
-      <View style={styles.addItem}>
-        <TouchableOpacity style={styles.plusButton} activeOpacity={0.8}>
-          {/* <Text style={styles.plusText}>+</Text> */}
-          <FontAwesome6 name="plus" size={30} color="#fff" />
-        </TouchableOpacity>
-      </View>
+      {/* Add item plus icon  */}
+      <AddItemIcon
+        onPress={() => {
+          setOpenModal(true);
+        }}
+      />
+      {/* show input modal  */}
+      <AddEducationalInstitute
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+      />
     </View>
   );
 };
@@ -119,28 +126,5 @@ const styles = StyleSheet.create({
   buttonText: {
     fontWeight: "600",
   },
-  addItem: {
-    alignItems: "center",
-    backgroundColor: "#2754cc",
-    width: scale(60),
-    height: verticalScale(60),
-    justifyContent: "center",
-    textAlign: "center",
-    position: "absolute",
-    bottom: verticalScale(100),
-    right: scale(30),
-    borderRadius: "100%",
-  },
-  plusButton: {
-    elevation: 10,
-    width:'100%',
-    height: '100%',
-    alignItems:'center',
-    justifyContent:'center',
-  },
-  // plusText: {
-  //   textAlign:'center',
-  //   fontSize: moderateScale(40),
-  //   color: '#fff',
-  // }
+  
 });

@@ -7,11 +7,15 @@ import {
   Entypo,
   Ionicons,
   SimpleLineIcons,
+  FontAwesome5,
+  FontAwesome6,
 } from "@expo/vector-icons";
 
 interface IconProps {
   iconPackage:
     | "FontAwesome"
+    | "FontAwesome5"
+    | "FontAwesome6"
     | "MaterialIcons"
     | "AntDesign"
     | "Entypo"
@@ -32,6 +36,8 @@ const IconPackageName: React.FC<IconProps> = ({
 }) => {
   const iconPackages: Record<string, any> = {
     FontAwesome,
+    FontAwesome5,
+    FontAwesome6,
     MaterialIcons,
     AntDesign,
     Entypo,

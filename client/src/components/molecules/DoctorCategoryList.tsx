@@ -10,6 +10,7 @@ import React from "react";
 import { moderateScale, scale, verticalScale } from "react-native-size-matters";
 import data from "@/src/assets/list_data";
 import { router } from "expo-router";
+import doctor_category_list from "@/src/assets/doctor_category_list";
 
 const DoctorCategoryList = () => {
   const renderItem = ({ item }: any) => (
@@ -27,7 +28,7 @@ const DoctorCategoryList = () => {
   return (
     <View style={styles.listContainer}>
       <FlatList
-        data={data}
+        data={doctor_category_list}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         numColumns={3} // Creates a grid with 3 columns
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    width: "30%",
+    width: "32%",
     aspectRatio: 1,
     marginVertical: verticalScale(5),
     borderRadius: moderateScale(10),

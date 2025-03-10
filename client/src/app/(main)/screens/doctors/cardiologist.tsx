@@ -11,39 +11,42 @@ import React from "react";
 import CustomNavbar from "@/src/components/atoms/CustomNavbar";
 import SearchInput from "@/src/components/atoms/SearchInput";
 import { moderateScale, scale, verticalScale } from "react-native-size-matters";
-import hospital_list from "@/src/assets/hospital_list";
+import cardiologist_list from "@/src/assets/cardiologist_list";
 import AddItemIcon from "@/src/components/atoms/AddItemIcon";
-
-const Hospitals = () => {
+const Cardiologist = () => {
   const renderItem = ({ item }: any) => (
-    <View style={styles.hospitalContainer}>
+    <View style={styles.cardiologistContainer}>
       <View style={styles.imageContainer}>
         <Image style={styles.image} source={item.image} />
       </View>
 
       <View style={styles.infoContainer}>
-        <Text style={styles.hospitalName}>{item.name}</Text>
+        <Text style={styles.cardiologistName}>{item.name}</Text>
         <Text style={styles.infoText}>
-          <Text style={{ fontWeight: "700" }}>থানাঃ </Text>
-          {item.thana}
+          <Text style={{ fontWeight: "700" }}>বিশেষজ্ঞঃ </Text>
+          {item.experts}
         </Text>
         <Text style={styles.infoText}>
-          <Text style={{ fontWeight: "700" }}>ঠিকানাঃ  </Text>
-          {item.address}
+          <Text style={{ fontWeight: "700" }}>শিক্ষাগত যোগ্যতাঃ  </Text>
+          {item.educational_qualification}
+        </Text>
+        <Text style={styles.infoText}>
+          <Text style={{ fontWeight: "700" }}>বর্তমান কর্মস্থলঃ  </Text>
+          {item.present_workplace}
         </Text>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             activeOpacity={0.8}
             style={[styles.button, { backgroundColor: "#ff8000" }]}
           >
-            <Text style={styles.buttonText}>গুগল ম্যাপ</Text>
+            <Text style={styles.buttonText}>কল করুন</Text>
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.8}
             style={[styles.button, { backgroundColor: "#2754cc" }]}
           >
             <Text style={[styles.buttonText, { color: "#fff" }]}>
-              কল করুন
+              বিস্তারিত
             </Text>
           </TouchableOpacity>
         </View>
@@ -53,9 +56,9 @@ const Hospitals = () => {
   return (
     <SafeAreaView style={styles.container}>
       <CustomNavbar />
-      <SearchInput placeholderText="হাসপাতাল খুজুন ... " />
+      <SearchInput placeholderText="খুজুন (রোগের নাম , ডাক্তারের নাম ) " />
       <FlatList
-        data={hospital_list}
+        data={cardiologist_list}
         renderItem={renderItem}
         numColumns={1}
       />
@@ -65,16 +68,16 @@ const Hospitals = () => {
   );
 };
 
-export default Hospitals;
+export default Cardiologist;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
   },
-  hospitalContainer: {
+  cardiologistContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent:'center',
     backgroundColor: "#fff",
     gap: scale(12),
     padding: scale(12),
@@ -88,7 +91,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
   },
   imageContainer: {
-    width: scale(120),
+    width: scale(100),
     height: verticalScale(100),
     borderRadius: moderateScale(8),
     overflow: "hidden",
@@ -96,13 +99,13 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: "100%",
-    resizeMode: "cover",
+    resizeMode: "contain",
   },
   infoContainer: {
     flex: 1,
     justifyContent: "center",
   },
-  hospitalName: {
+  cardiologistName: {
     fontSize: moderateScale(16),
     fontWeight: "bold",
     color: "#333",
@@ -117,17 +120,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginTop: verticalScale(10),
+    marginTop: verticalScale(10)
+
   },
   button: {
     borderRadius: moderateScale(5),
     // borderWidth:2,
-    paddingHorizontal: scale(8),
+    paddingHorizontal: scale(15),
     paddingVertical: verticalScale(5),
     // borderColor:'#2754cc'
   },
   buttonText: {
     fontWeight: "700",
-    color: "#fff",
+    color: '#fff'
   },
 });

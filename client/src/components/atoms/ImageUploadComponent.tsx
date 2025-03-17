@@ -3,7 +3,7 @@ import React from "react";
 import { moderateScale, scale, verticalScale } from "react-native-size-matters";
 import * as ImagePicker from "expo-image-picker";
 
-const ImageUploadComponent = ({ image, setImage }: any) => {
+const ImageUploadComponent = ({ image, setImage , imageStyles}: any) => {
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -20,7 +20,7 @@ const ImageUploadComponent = ({ image, setImage }: any) => {
     }
   };
   return (
-    <View style={styles.imageContainer}>
+    <View style={[styles.imageContainer, imageStyles]}>
       <TouchableOpacity activeOpacity={0.7} onPress={pickImage}>
         <Image
           style={styles.image}

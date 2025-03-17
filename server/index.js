@@ -1,19 +1,27 @@
 const express = require('express')
-const cors = require('cors')
-const dotenv = require('dotenv')
+const dotenv = require('dotenv');
+const connectDB = require('./config/db');
+const cors = require('cors');
+const app = express()
 
-//config dot env file
+//config env file
 dotenv.config();
+const PORT = process.env.PORT || 3000
 
-const app = express();
-const PORT  = process.env.PORT
+//mongodb database connection
+connectDB();
 
-//get home route
-app.get('/', (req,res)=> {
-    res.send('Get request for home route')
-})
+//middleware
+app.use(express.json());
+
+//routes
+//user routes
+app.use("/api/auth", require('./routes/userRoutes'));
 
 
-app.listen(PORT, ()=>{
-    console.log(`Server is running at http://localhost:${PORT}`);
-})
+
+//run server on port
+app.listen(PORT, () => {
+  console.log(`Server is running at http://localhost:${PORT}`);
+});
+

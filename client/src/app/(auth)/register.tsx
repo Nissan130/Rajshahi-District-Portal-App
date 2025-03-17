@@ -15,15 +15,18 @@ import ButtonComponent from "@/src/components/atoms/ButtonComponent";
 import InputComponent from "@/src/components/atoms/InputComponent";
 import { FontAwesome } from "@expo/vector-icons";
 import PasswordComponent from "@/src/components/atoms/PasswordInput";
+import ImageUploadComponent from "@/src/components/atoms/ImageUploadComponent";
 
 const Register = () => {
   const [hidePassword, setHidePassword] = useState(true);
+  const [image, setImage] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [profession, setProfession] = useState("");
   const [address, setAddress] = useState("");
+  
 
   // const data = {name,number, email};
   // JSON.stringify(data);
@@ -60,6 +63,8 @@ const Register = () => {
       >
         <View style={styles.registerContainer}>
           <Text style={styles.register_heading}>নতুন একাউন্ট খুলুন </Text>
+          {/* image fields  */}
+          <ImageUploadComponent image={image} setImage={setImage} imageStyles = {{borderRadius: "100%", width: scale(100), height: verticalScale(100)}}/>
 
           {/* Register Fields */}
           <InputComponent
@@ -129,6 +134,7 @@ const Register = () => {
           <ButtonComponent
             buttonText="রেজিস্ট্রেশন করুন"
             onPress={onClickRegister}
+            style={{width:'100%'}}
           />
 
           {/* Login Link */}
@@ -168,10 +174,11 @@ const styles = StyleSheet.create({
     maxWidth: scale(350), // Adds a max width for better design
     elevation: moderateScale(10),
     borderRadius: moderateScale(10),
+    alignItems:'center'
   },
   register_heading: {
     textAlign: "center",
-    paddingBottom: verticalScale(30),
+    paddingBottom: verticalScale(10),
     fontSize: moderateScale(20),
     fontWeight: "700",
     color: "#2754cc",

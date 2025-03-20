@@ -1,27 +1,78 @@
-import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Alert,
+} from "react-native";
 import React from "react";
 import { moderateScale, scale, verticalScale } from "react-native-size-matters";
 import * as ImagePicker from "expo-image-picker";
 
-const ImageUploadComponent = ({ image, setImage , imageStyles}: any) => {
+const ImageUploadComponent = ({ image, setImage, imageStyles }: any) => {
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images", "videos"],
-      allowsEditing: false,
-      aspect: [4, 3],
-      quality: 1,
-    });
+    const result = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (result.granted) {
+      // Let user pick an image from gallery
+      let imageResult = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: false,
+        aspect: [4, 3],
+        quality: 1,
+      });
 
-    console.log(result);
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      if (!imageResult.canceled) {
+        setImage(imageResult.assets[0].uri);
+      }
+    } else {
+      Alert.alert(
+        "Permission denied",
+        "You need to allow access to the gallery."
+      );
     }
   };
+
+  const takePhoto = async () => {
+    const result = await ImagePicker.requestCameraPermissionsAsync();
+    if (result.granted) {
+      // Let user take a photo using camera
+      let cameraResult = await ImagePicker.launchCameraAsync({
+        allowsEditing: false,
+        quality: 1,
+      });
+
+      if (!cameraResult.canceled) {
+        setImage(cameraResult.assets[0].uri);
+      }
+    } else {
+      Alert.alert(
+        "Permission denied",
+        "You need to allow access to the camera."
+      );
+    }
+  };
+
+  const handleImageSelection = () => {
+    Alert.alert(
+      "Choose an option",
+      "Select an image from gallery or take a photo",
+      [
+        {
+          text: "Take Photo",
+          onPress: takePhoto,
+        },
+        {
+          text: "Select from Gallery",
+          onPress: pickImage,
+        },
+      ]
+    );
+  };
+
   return (
     <View style={[styles.imageContainer, imageStyles]}>
-      <TouchableOpacity activeOpacity={0.7} onPress={pickImage}>
+      <TouchableOpacity activeOpacity={0.7} onPress={handleImageSelection}>
         <Image
           style={styles.image}
           source={
@@ -44,12 +95,10 @@ const styles = StyleSheet.create({
     borderRadius: moderateScale(10),
     overflow: "hidden",
     marginBottom: verticalScale(10),
-    // backgroundColor:'red'
   },
   image: {
     width: "100%",
     height: "100%",
     resizeMode: "cover",
-    // borderRadius: moderateScale(20)
   },
 });

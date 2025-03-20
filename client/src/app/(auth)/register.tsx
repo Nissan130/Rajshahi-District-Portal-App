@@ -16,33 +16,76 @@ import InputComponent from "@/src/components/atoms/InputComponent";
 import { FontAwesome } from "@expo/vector-icons";
 import PasswordComponent from "@/src/components/atoms/PasswordInput";
 import ImageUploadComponent from "@/src/components/atoms/ImageUploadComponent";
+import axios from 'axios';
 
 const Register = () => {
   const [hidePassword, setHidePassword] = useState(true);
   const [image, setImage] = useState<string | null>(null);
   const [name, setName] = useState("");
-  const [number, setNumber] = useState("");
+  const [mobileNumber, setMobileNumber] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [profession, setProfession] = useState("");
   const [address, setAddress] = useState("");
-  
 
   // const data = {name,number, email};
   // JSON.stringify(data);
   // console.log(data);
 
   //handle on click register
-  const onClickRegister = () => {
-    //validate form
-    if (!name || !number || !password || !email || !profession || !address) {
+const handleSubmit = async () => {
+  try {
+    if (
+      !image ||
+      !name ||
+      !mobileNumber ||
+      !password ||
+      !email ||
+      !profession ||
+      !address
+    ) {
       Alert.alert("Please fill all input fields");
-    } else {
-      const data = { name, number, password, email, profession, address };
-      const userData = JSON.stringify(data);
-      console.log(userData);
+      return;
     }
-  };
+
+    const uriParts = image.split(".");
+    const fileType = uriParts[uriParts.length - 1];
+
+    const response = await fetch(image);
+    const blob = await response.blob();
+
+    const formData = new FormData();
+    formData.append("image", blob);
+    formData.append("name", name);
+    formData.append("mobileNumber", mobileNumber);
+    formData.append("password", password);
+    formData.append("email", email);
+    formData.append("profession", profession);
+    formData.append("address", address);
+
+    const res = await fetch("http://10.1.1.108:8080/api/auth/register", {
+      method: "POST",
+      body: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    const data = await res.json();
+    console.log(data);
+
+    if (res.ok) {
+      alert("Registration successful");
+      router.push("/(auth)/login");
+    } else {
+      alert("Registration failed");
+    }
+  } catch (error) {
+    console.log(error);
+    // alert("Something went wrong");
+  }
+};
+
 
   const showPassword = () => {
     setHidePassword(!hidePassword);
@@ -64,7 +107,15 @@ const Register = () => {
         <View style={styles.registerContainer}>
           <Text style={styles.register_heading}>নতুন একাউন্ট খুলুন </Text>
           {/* image fields  */}
-          <ImageUploadComponent image={image} setImage={setImage} imageStyles = {{borderRadius: "100%", width: scale(100), height: verticalScale(100)}}/>
+          <ImageUploadComponent
+            image={image}
+            setImage={setImage}
+            imageStyles={{
+              borderRadius: "100%",
+              width: scale(100),
+              height: verticalScale(100),
+            }}
+          />
 
           {/* Register Fields */}
           <InputComponent
@@ -78,13 +129,13 @@ const Register = () => {
             }}
           />
           <InputComponent
-            label="আপনার নাম্বার"
+            label="আপনার মোবাইল নাম্বার"
             icon="mobile"
             keyboardType="numeric"
             iconPackage="FontAwesome"
-            value={number}
+            value={mobileNumber}
             setValue={(e: any) => {
-              setNumber(e);
+              setMobileNumber(e);
             }}
           />
           <PasswordComponent
@@ -133,8 +184,8 @@ const Register = () => {
           {/* Register Button */}
           <ButtonComponent
             buttonText="রেজিস্ট্রেশন করুন"
-            onPress={onClickRegister}
-            style={{width:'100%'}}
+            onPress={handleSubmit}
+            style={{ width: "100%" }}
           />
 
           {/* Login Link */}
@@ -174,7 +225,7 @@ const styles = StyleSheet.create({
     maxWidth: scale(350), // Adds a max width for better design
     elevation: moderateScale(10),
     borderRadius: moderateScale(10),
-    alignItems:'center'
+    alignItems: "center",
   },
   register_heading: {
     textAlign: "center",

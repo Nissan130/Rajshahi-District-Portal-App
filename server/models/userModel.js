@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema(
   {
     image: {
-      path: {type: String, required: true},
-      filename: {type: String, required: true}
+      type: String,
+      required: false
     },
     name: {
       type: String,

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   View,
   Text,
@@ -10,12 +10,15 @@ import {
 } from "react-native";
 import { scale, verticalScale, moderateScale } from "react-native-size-matters";
 import { router } from "expo-router";
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import ButtonComponent from "@/src/components/atoms/ButtonComponent";
 import InputComponent from "@/src/components/atoms/InputComponent";
 import PasswordComponent from "@/src/components/atoms/PasswordInput";
+import { GlobalContext } from "@/src/context/globalContext";
 
 const Login = () => {
+  const {setState} = useContext(GlobalContext);
   const [hidePassword, setHidePassword] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -36,6 +39,10 @@ const Login = () => {
       });
 
       const data = await res.json();
+
+      //save data to async storage (local storage)
+      setState(data);
+      await AsyncStorage.setItem("@auth", JSON.stringify(data));
 
       if (res.ok) {
         Alert.alert(data?.message);

@@ -4,12 +4,19 @@ import {
   SafeAreaView,
   StyleSheet,
   StatusBar,
+  Image,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { moderateScale, scale, verticalScale } from "react-native-size-matters";
 import FooterMenu from "@/src/components/molecules/FooterMenu";
+import { GlobalContext } from "@/src/context/globalContext";
 
 const Notification = () => {
+  const {state} = useContext(GlobalContext);
+  const imageUrl = state.user.profilePic.url;
+  console.log(imageUrl);
+
+  console.log(state.user.profilePic.url);
    const [currentPage, setCurrentPage] = useState("নোটিফিকেশন");
   return (
     <SafeAreaView style={styles.container}>
@@ -18,7 +25,11 @@ const Notification = () => {
         <Text>Heading</Text>
       </View>
       <View style={styles.bodyContainer}>
-        <Text>Body of Notification</Text>
+        <Text>{JSON.stringify(state.user, null, 6)}</Text>
+        <Image
+          source={{ uri: state.user.profilePic.url }}
+          style={{ width: 120, height: 120 }}
+        />
       </View>
 
       {/* footer menu */}

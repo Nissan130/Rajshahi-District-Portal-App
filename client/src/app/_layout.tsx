@@ -1,6 +1,7 @@
 import { View, Text } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Redirect, Stack, useRouter } from "expo-router";
+import GlobalContextProvider from "../context/globalContext";
 
 const RootLayout = () => {
   const router = useRouter();
@@ -15,7 +16,10 @@ const RootLayout = () => {
   }, [isLogin]);
 
   return (
-    <Stack screenOptions={{ headerShown: false }} />
+    <GlobalContextProvider>
+       <Stack screenOptions={{ headerShown: false }} />
+    </GlobalContextProvider>
+   
   );
 };
 

@@ -2,6 +2,7 @@ const userModel = require("../models/userModel");
 const cloudinary = require("cloudinary");
 const getDataUri = require("../utils/features");
 const { hashPassword, comparePassword } = require("../utils/authHelpers");
+const jwt = require('jsonwebtoken');
 
 // Register Controller
 const registerController = async (req, res) => {
@@ -113,9 +114,15 @@ const loginController = async (req, res) => {
     })
    }
 
+   //jwt token
+   const token = await jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {expiresIn: '7d'});
+   user.password = undefined; //undefine password for security
+
     return res.status(200).send({
       success: true,
       message: "Login Successfull",
+      token,
+      user
     });
   } catch (error) {
     return res.status(500).send({

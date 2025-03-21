@@ -68,10 +68,11 @@ const styles = StyleSheet.create({
     width: "100%",
     height: verticalScale(50),
     backgroundColor: "#fff",
-    paddingHorizontal: scale(10),
+    paddingHorizontal: scale(20),
     paddingVertical: verticalScale(3),
     borderTopWidth: 1,
     borderColor: "#eee",
+    elevation: 10
   },
   footerButton: {
     alignItems: "center",

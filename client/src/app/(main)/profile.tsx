@@ -5,8 +5,9 @@ import {
   StyleSheet,
   TouchableOpacity,
   StatusBar,
+  Image,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { moderateScale, scale, verticalScale } from "react-native-size-matters";
 import Entypo from "@expo/vector-icons/Entypo";
 import {
@@ -20,6 +21,8 @@ import {
 } from "@expo/vector-icons";
 import FooterMenu from "@/src/components/molecules/FooterMenu";
 import CustomNavbar from "@/src/components/atoms/CustomNavbar";
+import { GlobalContext } from "@/src/context/globalContext";
+import { router } from "expo-router";
 
 const profileListItem = [
   {
@@ -46,6 +49,8 @@ const profileListItem = [
 
 const Profile = () => {
   const [currentPage, setCurrentPage] = useState("প্রোফাইল");
+  const {state} = useContext(GlobalContext);
+   console.log(state.user.profilePic.url);
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={"#2754cc"} barStyle={'light-content'} />
@@ -53,17 +58,17 @@ const Profile = () => {
       <View style={styles.bodyContainer}>
         <View style={styles.userInfoContainer}>
           <View style={styles.profileImg}>
-            <Text style={styles.initial}>N</Text>
+            <Image source={{uri: state.user.profilePic.url}} style={styles.image} />
           </View>
           <View style={styles.profileInfo}>
-            <Text style={styles.name}>Nissan</Text>
-            <Text style={styles.role}>Student</Text>
+            <Text style={styles.name}>{state.user.name}</Text>
+            <Text style={styles.role}>{state.user.profession}</Text>
           </View>
         </View>
 
         {profileListItem.map((item, index) => {
           return (
-            <TouchableOpacity style={styles.profileMenuList} activeOpacity={0.8} key={index}>
+            <TouchableOpacity style={styles.profileMenuList} activeOpacity={0.8} key={index} onPress={()=>router.push('/(auth)/login')}>
               <View style={styles.title_icon}>
                 {item.icon}
                 <Text style={styles.title}>{item.title}</Text>
@@ -110,6 +115,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginRight: scale(15),
+  },
+  image: {
+    width: '100%',
+    height:'100%',
+    overflow:'hidden',
+    borderRadius: moderateScale(100),
+    resizeMode:'cover'
   },
   initial: {
     fontSize: 24,

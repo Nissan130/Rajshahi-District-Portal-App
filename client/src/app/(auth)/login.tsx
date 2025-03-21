@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   StatusBar,
   ScrollView,
+  Alert,
 } from "react-native";
 import { scale, verticalScale, moderateScale } from "react-native-size-matters";
 import { router } from "expo-router";
@@ -16,6 +17,38 @@ import PasswordComponent from "@/src/components/atoms/PasswordInput";
 
 const Login = () => {
   const [hidePassword, setHidePassword] = useState(true);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  
+  
+  //handle submit for login
+  const handleSubmit = async () => {
+    try {
+
+      const formData = new FormData();
+      formData.append("email", email);
+      formData.append("password", password);
+     
+      //send data to server
+      const res = await fetch("http://10.1.1.108:3000/api/auth/login", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        Alert.alert(data?.message);
+        router.push("/(main)/home");
+      } else {
+        Alert.alert(data?.message);
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert("Something went wrong. Try Again");
+    }
+  };
+
   const showPassword = () => {
     setHidePassword(!hidePassword);
   };
@@ -37,10 +70,14 @@ const Login = () => {
 
           {/* Login Fields */}
           <InputComponent
-            label="আপনার নাম্বার"
-            icon="mobile"
-            keyboardType="numeric"
-            iconPackage="FontAwesome"
+            label="আপনার ইমেইল"
+            icon="email"
+            keyboardType="email-address"
+            iconPackage="MaterialIcons"
+            value={email}
+            setValue={(e: any) => {
+              setEmail(e);
+            }}
           />
           <PasswordComponent
             label="আপনার পাসওয়ার্ড"
@@ -49,6 +86,8 @@ const Login = () => {
             iconPackage="MaterialIcons"
             hidePassword={hidePassword}
             onPress={showPassword}
+            value={password}
+            setValue={(e: any) => setPassword(e)}
           />
           {/* Forgot Password */}
           <Text style={styles.forgot_password_text}>
@@ -56,7 +95,11 @@ const Login = () => {
           </Text>
 
           {/* Login Button */}
-          <ButtonComponent buttonText="লগইন করুন" />
+          <ButtonComponent
+            buttonText="লগইন করুন"
+            onPress={handleSubmit}
+            style={{ width: "100%" }}
+          />
 
           {/* Register Link */}
           <Text style={styles.account_text}>

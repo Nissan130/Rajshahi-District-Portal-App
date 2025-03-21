@@ -4,17 +4,21 @@ const connectDB = require('./config/db');
 const cors = require('cors');
 const app = express()
 const cloudinary = require('cloudinary')
+const multer  = require('multer');
 
 //config env file
 dotenv.config();
-const PORT = process.env.PORT || 8080
+const PORT = process.env.PORT || 3000
 
 //mongodb database connection
 connectDB();
 
 //middleware
-app.use(express.json());
+app.use(express.json()); //for only json data
+app.use(express.urlencoded({extended: true})); // for form data
 app.use(cors()); 
+app.use(multer().none()); //for form data multer is must
+
 
 //cloudinary config
 cloudinary.v2.config({
@@ -27,8 +31,6 @@ cloudinary.v2.config({
 //routes
 //user routes
 app.use("/api/auth", require('./routes/userRoutes'));
-
-// app.use("/uploads", express.static("uploads"));
 
 
 //run server on port

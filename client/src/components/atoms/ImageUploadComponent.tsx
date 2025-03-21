@@ -5,13 +5,18 @@ import {
   StyleSheet,
   Image,
   Alert,
+  Modal,
+  Pressable,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { moderateScale, scale, verticalScale } from "react-native-size-matters";
 import * as ImagePicker from "expo-image-picker";
+import { Feather, FontAwesome } from "@expo/vector-icons";
 
 const ImageUploadComponent = ({ image, setImage, imageStyles }: any) => {
-  const pickImage = async () => {
+  const [modalVisible, setModalVisible] = useState(false);
+  
+  const pickImageFromGallery = async () => {
     const result = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (result.granted) {
       // Let user pick an image from gallery
@@ -28,12 +33,13 @@ const ImageUploadComponent = ({ image, setImage, imageStyles }: any) => {
     } else {
       Alert.alert(
         "Permission denied",
-        "You need to allow access to the gallery."
+        "You need to allow access to the gallery"
       );
     }
+    setModalVisible(false);
   };
 
-  const takePhoto = async () => {
+  const takePhotoUsingCamera = async () => {
     const result = await ImagePicker.requestCameraPermissionsAsync();
     if (result.granted) {
       // Let user take a photo using camera
@@ -51,28 +57,15 @@ const ImageUploadComponent = ({ image, setImage, imageStyles }: any) => {
         "You need to allow access to the camera."
       );
     }
-  };
-
-  const handleImageSelection = () => {
-    Alert.alert(
-      "Choose an option",
-      "Select an image from gallery or take a photo",
-      [
-        {
-          text: "Take Photo",
-          onPress: takePhoto,
-        },
-        {
-          text: "Select from Gallery",
-          onPress: pickImage,
-        },
-      ]
-    );
+    setModalVisible(false)
   };
 
   return (
     <View style={[styles.imageContainer, imageStyles]}>
-      <TouchableOpacity activeOpacity={0.7} onPress={handleImageSelection}>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={() => setModalVisible(true)}
+      >
         <Image
           style={styles.image}
           source={
@@ -82,6 +75,33 @@ const ImageUploadComponent = ({ image, setImage, imageStyles }: any) => {
           }
         />
       </TouchableOpacity>
+
+      <Modal
+        transparent={true}
+        visible={modalVisible}
+        animationType="fade"
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <Pressable style={styles.modalOverlay} onPress={()=>setModalVisible(false)}>
+          <View style={styles.modalContainer}>
+            <View>
+              <Text style={{ fontSize: moderateScale(16), color: "#000" }}>
+                Choose an option
+              </Text>
+            </View>
+            <View style={styles.chooseOption}>
+              <TouchableOpacity style={styles.options} onPress={takePhotoUsingCamera}>
+                <Feather name="camera" size={24} color="black" />
+                <Text>Camera</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.options} onPress={pickImageFromGallery}>
+                <FontAwesome name="photo" size={24} color="black" />
+                <Text>Gallery</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Pressable>
+      </Modal>
     </View>
   );
 };
@@ -100,5 +120,36 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     resizeMode: "cover",
+  },
+  modalOverlay: {
+    backgroundColor: "rgba(0,0,0,0.1)",
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "flex-end",
+  },
+  modalContainer: {
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: verticalScale(30),
+    backgroundColor: "#eee",
+    width: "100%",
+    padding: moderateScale(10),
+    paddingBottom: 50,
+    borderTopRightRadius: moderateScale(20),
+    borderTopLeftRadius: moderateScale(20),
+    elevation: 10,
+  },
+  chooseOption: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: scale(100),
+  },
+  options: {
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 5,
   },
 });

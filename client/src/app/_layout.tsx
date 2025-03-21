@@ -10,7 +10,7 @@ const RootLayout = () => {
     if (isLogin) {
       router.replace("/(main)/home");
     } else {
-      router.replace("/(auth)/register");
+      router.replace("/(auth)/login");
     }
   }, [isLogin]);
 

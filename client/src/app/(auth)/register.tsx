@@ -7,6 +7,7 @@ import {
   StatusBar,
   ScrollView,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import { scale, verticalScale, moderateScale } from "react-native-size-matters";
 import { router } from "expo-router";
@@ -27,6 +28,8 @@ const Register = () => {
   const [profession, setProfession] = useState("");
   const [address, setAddress] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
   //handle on click register
   const handleSubmit = async () => {
     try {
@@ -42,10 +45,11 @@ const Register = () => {
         Alert.alert("Please fill all input fields");
         return;
       }
-
+      setLoading(true);
       //get actual file type
-      const imageType = mime.lookup(image) || "image/jpeg";
+      const imageType = mime.lookup(image) || "image/jpg";
 
+      console.log(imageType);
 
       const formData = new FormData();
       formData.append("profilePic", {
@@ -53,7 +57,7 @@ const Register = () => {
         name: `profile.${imageType.split("/")[1]}`, // File name
         type: imageType, // MIME type
       } as any);
-      
+
       formData.append("name", name);
       formData.append("mobileNumber", mobileNumber);
       formData.append("password", password);
@@ -61,7 +65,7 @@ const Register = () => {
       formData.append("profession", profession);
       formData.append("address", address);
 
-      const res = await fetch("http://10.1.1.108:8080/api/auth/register", {
+      const res = await fetch("http://10.1.1.108:3000/api/auth/register", {
         method: "POST",
         body: formData,
         headers: {
@@ -73,20 +77,23 @@ const Register = () => {
       console.log(data);
 
       if (res.ok) {
-        alert("Registration successful");
+        Alert.alert(data?.message);
         router.push("/(auth)/login");
       } else {
-        alert("Registration failed");
+        Alert.alert(data?.message);
       }
     } catch (error) {
-      console.log(error);
-      // alert("Something went wrong");
+      console.error(error);
+      alert("Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
   const showPassword = () => {
     setHidePassword(!hidePassword);
   };
+
   const gotToLogin = () => {
     router.push("/(auth)/login");
   };
@@ -180,7 +187,20 @@ const Register = () => {
 
           {/* Register Button */}
           <ButtonComponent
-            buttonText="রেজিস্ট্রেশন করুন"
+            buttonText={
+              loading ? (
+                <View style={{ flexDirection: "row", gap: 10 }}>
+                  <ActivityIndicator color="#fff" />
+                  <Text
+                    style={{ color: "#fff", fontSize: 16, fontWeight: "bold" }}
+                  >
+                    অপেক্ষা করুন
+                  </Text>
+                </View>
+              ) : (
+                "রেজিস্ট্রেশন করুন"
+              )
+            }
             onPress={handleSubmit}
             style={{ width: "100%" }}
           />

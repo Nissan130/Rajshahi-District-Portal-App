@@ -14,10 +14,9 @@ const PORT = process.env.PORT || 3000
 connectDB();
 
 //middleware
-app.use(express.json()); //for only json data
 app.use(express.urlencoded({extended: true})); // for form data
 app.use(cors()); 
-app.use(multer().none()); //for form data multer is must
+
 
 
 //cloudinary config

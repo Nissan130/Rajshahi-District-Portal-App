@@ -1,6 +1,7 @@
 const userModel = require("../models/userModel");
 const cloudinary = require("cloudinary");
 const getDataUri = require("../utils/features");
+const { hashPassword, comparePassword } = require("../utils/authHelpers");
 
 // Register Controller
 const registerController = async (req, res) => {
@@ -50,10 +51,8 @@ const registerController = async (req, res) => {
       });
     }
 
-    // user.profilePic = {
-    //   public_id: cdb.public_id,
-    //   url: cdb.secure_url,
-    // };
+    //hash password
+    const hashedPassword = await hashPassword(password);
 
     const userData = new userModel({
       profilePic: {
@@ -62,7 +61,7 @@ const registerController = async (req, res) => {
       },
       name,
       mobileNumber,
-      password,
+      password: hashedPassword,
       email,
       profession,
       address,
@@ -106,12 +105,13 @@ const loginController = async (req, res) => {
     }
 
     //compare password
-    if (!(password === user.password)) {
-      return res.status(500).send({
-        success: false,
-        message: "Invalid Password",
-      });
-    }
+   const match = await comparePassword(password, user.password);
+   if(!match) {
+    return res.status(500).send({
+      success: false, 
+      message: "Invalid password"
+    })
+   }
 
     return res.status(200).send({
       success: true,

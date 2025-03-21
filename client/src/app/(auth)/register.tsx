@@ -10,13 +10,12 @@ import {
 } from "react-native";
 import { scale, verticalScale, moderateScale } from "react-native-size-matters";
 import { router } from "expo-router";
+import * as mime from "react-native-mime-types";
 
 import ButtonComponent from "@/src/components/atoms/ButtonComponent";
 import InputComponent from "@/src/components/atoms/InputComponent";
-import { FontAwesome } from "@expo/vector-icons";
 import PasswordComponent from "@/src/components/atoms/PasswordInput";
 import ImageUploadComponent from "@/src/components/atoms/ImageUploadComponent";
-import axios from 'axios';
 
 const Register = () => {
   const [hidePassword, setHidePassword] = useState(true);
@@ -28,64 +27,62 @@ const Register = () => {
   const [profession, setProfession] = useState("");
   const [address, setAddress] = useState("");
 
-  // const data = {name,number, email};
-  // JSON.stringify(data);
-  // console.log(data);
-
   //handle on click register
-const handleSubmit = async () => {
-  try {
-    if (
-      !image ||
-      !name ||
-      !mobileNumber ||
-      !password ||
-      !email ||
-      !profession ||
-      !address
-    ) {
-      Alert.alert("Please fill all input fields");
-      return;
+  const handleSubmit = async () => {
+    try {
+      if (
+        !image ||
+        !name ||
+        !mobileNumber ||
+        !password ||
+        !email ||
+        !profession ||
+        !address
+      ) {
+        Alert.alert("Please fill all input fields");
+        return;
+      }
+
+      //get actual file type
+      const imageType = mime.lookup(image) || "image/jpeg";
+
+
+      const formData = new FormData();
+      formData.append("profilePic", {
+        uri: image,
+        name: `profile.${imageType.split("/")[1]}`, // File name
+        type: imageType, // MIME type
+      } as any);
+      
+      formData.append("name", name);
+      formData.append("mobileNumber", mobileNumber);
+      formData.append("password", password);
+      formData.append("email", email);
+      formData.append("profession", profession);
+      formData.append("address", address);
+
+      const res = await fetch("http://10.1.1.108:8080/api/auth/register", {
+        method: "POST",
+        body: formData,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      const data = await res.json();
+      console.log(data);
+
+      if (res.ok) {
+        alert("Registration successful");
+        router.push("/(auth)/login");
+      } else {
+        alert("Registration failed");
+      }
+    } catch (error) {
+      console.log(error);
+      // alert("Something went wrong");
     }
-
-    const uriParts = image.split(".");
-    const fileType = uriParts[uriParts.length - 1];
-
-    const response = await fetch(image);
-    const blob = await response.blob();
-
-    const formData = new FormData();
-    formData.append("image", blob);
-    formData.append("name", name);
-    formData.append("mobileNumber", mobileNumber);
-    formData.append("password", password);
-    formData.append("email", email);
-    formData.append("profession", profession);
-    formData.append("address", address);
-
-    const res = await fetch("http://10.1.1.108:8080/api/auth/register", {
-      method: "POST",
-      body: formData,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-
-    const data = await res.json();
-    console.log(data);
-
-    if (res.ok) {
-      alert("Registration successful");
-      router.push("/(auth)/login");
-    } else {
-      alert("Registration failed");
-    }
-  } catch (error) {
-    console.log(error);
-    // alert("Something went wrong");
-  }
-};
-
+  };
 
   const showPassword = () => {
     setHidePassword(!hidePassword);

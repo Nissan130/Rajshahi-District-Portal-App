@@ -1,46 +1,49 @@
 const userModel = require("../models/userModel");
-const multer = require("multer");
-const fs = require("fs");
-const path = require("path");
-
-// Ensure 'uploads' folder exists
-const uploadDir = path.join(__dirname, "../uploads");
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-// Upload Profile Image
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir); // Save to 'uploads' folder
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + "-" + file.originalname); // Unique filename
-  },
-});
-
-const uploadProfileImage = multer({ storage });
+const cloudinary = require('cloudinary')
+const getDataUri = require("../utils/features");
 
 // Register Controller
 const registerController = async (req, res) => {
   try {
-    const { name, mobileNumber, password, email, profession, address } = req.body;
+    const { name, mobileNumber, password, email, profession, address } =
+      req.body;
+    // file get from client photo
+    const file = getDataUri(req.file);
     
-    if (!req.file) {
-      return res.status(400).json({ success: false, message: "Image is required" });
+
+    if (!file) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Image is required" });
     }
 
-    const imageUrl = `http://10.1.1.108:8080/uploads/${req.file.filename}`;
+     const cdb = await cloudinary.v2.uploader.upload(file.content);
 
-    if (!name || !mobileNumber || !password || !email || !profession || !address) {
+
+    if (
+      !name ||
+      !mobileNumber ||
+      !password ||
+      !email ||
+      !profession ||
+      !address
+    ) {
       return res.status(400).json({
         success: false,
         message: "All fields are required.",
       });
     }
 
+    // user.profilePic = {
+    //   public_id: cdb.public_id,
+    //   url: cdb.secure_url,
+    // };
+
     const userData = new userModel({
-      image: imageUrl, // Store URL instead of file path
+      profilePic: {
+        public_id: cdb.public_id,
+        url: cdb.secure_url,
+      },
       name,
       mobileNumber,
       password,
@@ -51,7 +54,7 @@ const registerController = async (req, res) => {
 
     await userData.save(); // Fix: Await DB save
 
-    return res.status(201).json({
+    return res.status(200).json({
       success: true,
       message: "Registration successful",
       userData,
@@ -65,4 +68,4 @@ const registerController = async (req, res) => {
   }
 };
 
-module.exports = { registerController, uploadProfileImage };
+module.exports = { registerController};

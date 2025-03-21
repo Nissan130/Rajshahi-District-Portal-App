@@ -1,8 +1,9 @@
-const express = require('express')
+const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const cors = require('cors');
 const app = express()
+const cloudinary = require('cloudinary')
 
 //config env file
 dotenv.config();
@@ -13,16 +14,21 @@ connectDB();
 
 //middleware
 app.use(express.json());
-app.use(cors({ origin: "*"})); // Allow all origins
+app.use(cors()); 
+
+//cloudinary config
+cloudinary.v2.config({
+  cloud_name: process.env.COUDINARY_NAME,
+  api_key: process.env.COUDINARY_API_KEY,
+  api_secret: process.env.COUDINARY_SECRET,
+});
+
 
 //routes
 //user routes
 app.use("/api/auth", require('./routes/userRoutes'));
 
-app.get('/api/auth/register', (req,res)=> {
-  res.send('React native');
-})
-app.use("/uploads", express.static("uploads"));
+// app.use("/uploads", express.static("uploads"));
 
 
 //run server on port

@@ -2,6 +2,14 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
   {
+    profilePic: {
+      public_id: {
+        type: String
+      },
+      url: {
+        type: String 
+      }
+    },
     image: {
       type: String,
       required: false
@@ -38,4 +46,4 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model("user", userSchema);

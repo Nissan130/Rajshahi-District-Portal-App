@@ -2,7 +2,11 @@ import { View, StyleSheet } from "react-native";
 import React from "react";
 import DropDownPicker from "react-native-dropdown-picker";
 import { moderateScale, scale, verticalScale } from "react-native-size-matters";
-import { FontAwesome5, FontAwesome6, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  FontAwesome5,
+  FontAwesome6,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 
 const DropDownPickerComponent = ({
   open,
@@ -11,25 +15,30 @@ const DropDownPickerComponent = ({
   setOpen,
   setValue,
   setItems,
-}: any) => {
+}) => {
   return (
     <View style={styles.container}>
-      <View style={styles.inputContainer}>
+      <View
+        style={[styles.inputContainer, { borderColor: value ? "red" : "#aaa" }]}
+      >
         {/* Icon Positioned Inside the Dropdown */}
         <FontAwesome6 name="map-pin" size={20} style={styles.icon} />
 
         <DropDownPicker
-          style={styles.dropdownPicker}
+          style={[
+            styles.dropdownPicker,
+            { borderColor: value ? "#2754cc" : "#aaa" },
+          ]}
           open={open}
           value={value}
           items={items}
           setOpen={setOpen}
           setValue={setValue}
           setItems={setItems}
-          placeholder="Select"
+          placeholder="থানা"
           containerStyle={styles.dropdownContainer}
           dropDownContainerStyle={styles.dropdownList}
-          labelStyle={styles.label}
+          labelStyle={[styles.label, { color: value ? "#333" : "#aaa" }]}
           textStyle={styles.text}
         />
       </View>
@@ -43,7 +52,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginBottom: verticalScale(35),
-    marginTop: verticalScale(20)
+    marginTop: verticalScale(20),
   },
   inputContainer: {
     flexDirection: "row",
@@ -61,7 +70,7 @@ const styles = StyleSheet.create({
   dropdownPicker: {
     flex: 1,
     borderWidth: 1,
-    borderColor:'#aaa',
+    borderColor: "#aaa",
     backgroundColor: "transparent",
     paddingLeft: scale(40),
   },
@@ -75,7 +84,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontWeight: "600",
-    color: "#333",
+    color: "#aaa",
   },
   text: {
     color: "#333",

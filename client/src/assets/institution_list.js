@@ -1,4 +1,4 @@
-const school_list = [
+const institution_list = [
   {
     name: "মুণ্ডুমালা সরকারি উচ্চ বিদ্যালয়",
     eastiblisedYear: "১৯৫৩",
@@ -28,4 +28,4 @@ const school_list = [
     image: require("@/src/assets/images/mundumala_high_girls_school.jpeg"),
   },
 ];
-module.exports = school_list;
+module.exports = institution_list;

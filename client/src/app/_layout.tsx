@@ -5,7 +5,7 @@ import GlobalContextProvider from "../context/globalContext";
 
 const RootLayout = () => {
   const router = useRouter();
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
 
   useEffect(() => {
     if (isLogin) {

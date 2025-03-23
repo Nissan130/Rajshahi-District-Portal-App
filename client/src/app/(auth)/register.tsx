@@ -52,7 +52,7 @@ const Register = () => {
       console.log(imageType);
 
       const formData = new FormData();
-      formData.append("profilePic", {
+      formData.append("image", {
         uri: image,
         name: `profile.${imageType.split("/")[1]}`, // File name
         type: imageType, // MIME type

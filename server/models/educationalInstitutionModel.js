@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema(
+const educationalInstitutionSchema = new mongoose.Schema(
   {
     image: {
       public_id: {
@@ -12,28 +12,15 @@ const userSchema = new mongoose.Schema(
         required: true,
       },
     },
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    mobileNumber: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    password: {
+    institutionName: {
       type: String,
       required: true,
     },
-    email: {
+    establishedYear: {
       type: String,
       required: true,
-      trim: true,
-      unique: true,
-      lowercase: true,
     },
-    profession: {
+    thana: {
       type: String,
       required: true,
     },
@@ -41,8 +28,16 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    institutionType: {
+      type: String,
+      required: true,
+      enum: ["school", "college", "madrasha", "university", "coachingCenter"],
+    },
   },
-  { timestamps: true }
+  { discriminatorKey: "institutionType", timestamps: true }
 );
 
-module.exports = mongoose.model("user", userSchema);
+module.exports = mongoose.model(
+  "EducationalInstitution",
+  educationalInstitutionSchema
+);

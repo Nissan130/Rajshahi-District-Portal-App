@@ -31,6 +31,9 @@ cloudinary.v2.config({
 //user routes
 app.use("/api/auth", require('./routes/userRoutes'));
 
+//educational insitution routes
+app.use("/api/main/educational-institution", require('./routes/educationalInstitutionRoute'));
+
 
 //run server on port
 app.listen(PORT, () => {

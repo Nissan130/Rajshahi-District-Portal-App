@@ -43,7 +43,7 @@ const registerController = async (req, res) => {
       });
     }
 
-    //chem mobile number
+    //check mobile number
     const mobileNumberExist = await userModel.findOne({ mobileNumber });
     if (mobileNumberExist) {
       return res.status(500).send({
@@ -56,7 +56,7 @@ const registerController = async (req, res) => {
     const hashedPassword = await hashPassword(password);
 
     const userData = new userModel({
-      profilePic: {
+      image: {
         public_id: cdb.public_id,
         url: cdb.secure_url,
       },

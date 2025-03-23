@@ -1,25 +1,39 @@
-import { View, Text, SafeAreaView, StyleSheet, Image, TouchableOpacity, FlatList } from "react-native";
-import React, { useState } from "react";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  FlatList,
+} from "react-native";
+import React, { useEffect, useState } from "react";
 import { moderateScale, scale, verticalScale } from "react-native-size-matters";
-import university_list from '@/src/assets/school_list'
+import institution_list from "@/src/assets/institution_list";
 import SearchInput from "@/src/components/atoms/SearchInput";
 import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
 import AddItemIcon from "@/src/components/atoms/AddItemIcon";
 import AddEducationalInstitute from "@/src/components/molecules/AddEducationalInstitute";
 
-const University = () => {
+const Institution = ({
+  institutionType,
+  institutionTypeBan,
+  filteredInstitution,
+  refreshInstitutions,
+}) => {
   const [openModal, setOpenModal] = useState(false);
+
   const renderItem = ({ item }: any) => (
-    <View style={styles.universityContainer}>
+    <View style={styles.institutionContainer}>
       <View style={styles.imageContainer}>
-        <Image style={styles.image} source={item.image} />
+        <Image style={styles.image} source={{ uri: item.image.url }} />
       </View>
 
       <View style={styles.infoContainer}>
-        <Text style={styles.universityName}>{item.name}</Text>
+        <Text style={styles.institutionName}>{item.institutionName}</Text>
         <Text
           style={styles.infoText}
-        >{`স্থাপিতঃ ${item.eastiblisedYear} সাল`}</Text>
+        >{`স্থাপিতঃ ${item.establishedYear} সাল`}</Text>
         <Text style={styles.infoText}>{`থানাঃ ${item.thana}`}</Text>
         <Text style={styles.infoText}>{`ঠিকানাঃ ${item.address}`}</Text>
         <View style={styles.buttonContainer}>
@@ -33,7 +47,7 @@ const University = () => {
             activeOpacity={0.8}
             style={[styles.button, { backgroundColor: "#2754cc" }]}
           >
-            <Text style={[styles.buttonText, { color: "#fff" }]}>কল করুন</Text>
+            <Text style={styles.buttonText}>কল করুন</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -41,8 +55,14 @@ const University = () => {
   );
   return (
     <View style={styles.container}>
-      <SearchInput placeholderText="বিশ্ববিদ্যালয় খুজুন ..." />
-      <FlatList data={university_list} renderItem={renderItem} numColumns={1} />
+      <SearchInput placeholderText={`${institutionTypeBan} খুজুন...`} />
+
+      <FlatList
+        data={filteredInstitution}
+        renderItem={renderItem}
+        numColumns={1}
+      />
+
       {/* Add item plus icon  */}
       <AddItemIcon
         onPress={() => {
@@ -53,19 +73,22 @@ const University = () => {
       <AddEducationalInstitute
         openModal={openModal}
         setOpenModal={setOpenModal}
+        institutionType={institutionType}
+        institutionTypeBan={institutionTypeBan}
+        refreshInstitutions={refreshInstitutions}
       />
     </View>
   );
 };
 
-export default University;
+export default Institution;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     position: "relative",
   },
-  universityContainer: {
+  institutionContainer: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#fff",
@@ -95,7 +118,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
   },
-  universityName: {
+  institutionName: {
     fontSize: moderateScale(16),
     fontWeight: "bold",
     color: "#333",
@@ -110,6 +133,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    marginTop: verticalScale(3)
     // paddingHorizontal: scale(5)
     // paddingVertical: verticalScale(5),
   },
@@ -122,6 +146,6 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontWeight: "600",
+    color: '#fff'
   },
-  
 });

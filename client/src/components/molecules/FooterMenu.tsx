@@ -31,6 +31,7 @@ const menuItems = [
 
 const FooterMenu = ({ currentPage , setCurrentPage}:any) => {
 
+
   return (
     <View style={styles.footerMenuContainer}>
       {menuItems.map((item, index): any => (
@@ -40,7 +41,7 @@ const FooterMenu = ({ currentPage , setCurrentPage}:any) => {
           style={styles.footerButton}
           onPress={() => {
             setCurrentPage(item.name);
-            router.push(item.route);
+            router.push(item.route as any);
           }}
         >
           {item.icon(currentPage === item.name ? "#2754cc" : "#888")}

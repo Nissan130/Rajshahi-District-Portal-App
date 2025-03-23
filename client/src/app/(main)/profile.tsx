@@ -50,7 +50,7 @@ const profileListItem = [
 const Profile = () => {
   const [currentPage, setCurrentPage] = useState("প্রোফাইল");
   const {state} = useContext(GlobalContext);
-   console.log(state.user.profilePic.url);
+ 
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={"#2754cc"} barStyle={'light-content'} />
@@ -58,7 +58,7 @@ const Profile = () => {
       <View style={styles.bodyContainer}>
         <View style={styles.userInfoContainer}>
           <View style={styles.profileImg}>
-            <Image source={{uri: state.user.profilePic.url}} style={styles.image} />
+            <Image source={{uri: state.user.image.url}} style={styles.image} />
           </View>
           <View style={styles.profileInfo}>
             <Text style={styles.name}>{state.user.name}</Text>

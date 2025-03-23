@@ -5,42 +5,62 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomNavbar from "@/src/components/atoms/CustomNavbar";
 import { moderateScale, scale, verticalScale } from "react-native-size-matters";
-import School from "./School";
-import College from "./College";
-import Madrasha from "./Madrasha";
-import CoachingCenter from "./CoachingCenter";
-import University from "./University";
+import Institution from "./institution";
 
 const EducationalInstitute = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [institutionTpye, setInstitutionType] = useState("স্কুল");
-  const InstitutionCategories = [
+  const [institutions, setInstitutions] = useState([]);
+  const [filteredInstitution, setFilteredInstitution] = useState([]);
+  const [institutionType, setInstitutionType] = useState("school");
+  const [institutionTypeBan, setInstitutionTypeBan] = useState("");
+  const [refresh, setRefresh] = useState(false);
+
+  console.log(institutionType);
+  const institutionTypeBangla = [
     "স্কুল",
     "কলেজ",
     "মাদরাসা",
     "বিশ্ববিদ্যালয়",
     "কোচিং সেন্টার",
   ];
+  const InstitutionCategories = [
+    "school",
+    "college",
+    "madrasha",
+    "university",
+    "coachingCenter",
+  ];
 
-  const handleInstitutionType = () => {
-    switch (institutionTpye) {
-      case "স্কুল":
-        return <School />;
-      case "কলেজ":
-        return <College />;
-      case "মাদরাসা":
-        return <Madrasha />;
-      case "বিশ্ববিদ্যালয়":
-        return <University />;
-      case "কোচিং সেন্টার":
-        return <CoachingCenter />;
-      default:
-        return <School />;
+  useEffect(() => {
+    const fetchInstitutions = async () => {
+      const res = await fetch(
+        "http://10.1.1.108:3000/api/main/educational-institution/get-institution"
+      );
+      const { getData } = await res.json();
+      setInstitutions(getData);
+    };
+    fetchInstitutions();
+  }, [refresh]); 
+
+  //filter data on data mount or type chnages
+  useEffect(() => {
+    if (institutions.length > 0) {
+      // filter institution by specific type
+      const filteredType = institutions.filter(
+        (item) => item.institutionType === institutionType
+      );
+      setFilteredInstitution(filteredType);
     }
-  };
+
+  }, [institutions, institutionType]);
+
+  //toggle refresh after refetching
+  const refreshInstitutions = ()=> {
+    setRefresh((prev)=> !prev)
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -55,6 +75,7 @@ const EducationalInstitute = () => {
                 onPress={() => {
                   setActiveIndex(index);
                   setInstitutionType(item);
+                  setInstitutionTypeBan(institutionTypeBangla[index]);
                 }}
                 style={[
                   styles.institutionHeadingButton,
@@ -64,13 +85,20 @@ const EducationalInstitute = () => {
                 <Text
                   style={activeIndex === index && styles.activeInstitutionText}
                 >
-                  {item}
+                  {institutionTypeBangla[index]}
                 </Text>
               </TouchableOpacity>
             );
           })}
         </View>
-        {handleInstitutionType()}
+        {/* {handleInstitutionType()} */}
+        {/* render institution  */}
+        <Institution
+          institutionType={institutionType}
+          institutionTypeBan={institutionTypeBan}
+          filteredInstitution={filteredInstitution}
+          refreshInstitutions={refreshInstitutions}
+        />
       </View>
     </SafeAreaView>
   );

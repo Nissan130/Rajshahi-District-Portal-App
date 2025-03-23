@@ -1,10 +1,10 @@
 const multer = require('multer');
 
 const storage = multer.memoryStorage();
-const singleUpload = multer({ storage }).single("profilePic");
+const singleImageUpload = multer({ storage }).single("image");
 
 const uploadInfoMulter = multer().none();
 
 
 
-module.exports ={ singleUpload, uploadInfoMulter}
+module.exports ={ singleImageUpload, uploadInfoMulter}

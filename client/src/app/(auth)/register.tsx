@@ -17,6 +17,8 @@ import ButtonComponent from "@/src/components/atoms/ButtonComponent";
 import InputComponent from "@/src/components/atoms/InputComponent";
 import PasswordComponent from "@/src/components/atoms/PasswordInput";
 import ImageUploadComponent from "@/src/components/atoms/ImageUploadComponent";
+import Toast from "react-native-toast-message";
+import api from '@/src/utils/api'
 
 const Register = () => {
   const [hidePassword, setHidePassword] = useState(true);
@@ -42,7 +44,10 @@ const Register = () => {
         !profession ||
         !address
       ) {
-        Alert.alert("Please fill all input fields");
+        Toast.show({
+          type: "error",
+          text1: "অনুগ্রহ করে সমস্ত প্রয়োজনীয় তথ্য পূরণ করুন",
+        });
         return;
       }
       setLoading(true);
@@ -65,26 +70,42 @@ const Register = () => {
       formData.append("profession", profession);
       formData.append("address", address);
 
-      const res = await fetch("http://10.1.1.108:3000/api/auth/register", {
-        method: "POST",
-        body: formData,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      // const res = await fetch("http://10.1.1.108:3000/api/auth/register", {
+      //   method: "POST",
+      //   body: formData,
+      //   headers: {
+      //     "Content-Type": "multipart/form-data",
+      //   },
+      // });
 
-      const data = await res.json();
-      console.log(data);
+      // const data = await res.json();
+      // console.log(data);
 
-      if (res.ok) {
-        Alert.alert(data?.message);
-        router.push("/(auth)/login");
+      //send data using axios
+      const {data} = await api.post("/auth/register", formData)
+      console.log(data)
+
+      if (data.success) {
+        Toast.show({
+          type: "success",
+          text1: data?.message,
+        });
+
+        setTimeout(() => {
+          router.push("/(auth)/login");
+        }, 1000);
       } else {
-        Alert.alert(data?.message);
+        Toast.show({
+          type: "error",
+          text1: data?.message,
+        });
       }
     } catch (error) {
       console.error(error);
-      alert("Something went wrong");
+      Toast.show({
+        type: "error",
+        text1: "কিছু ভুল হয়েছে! দয়া করে আবার চেষ্টা করুন",
+      });
     } finally {
       setLoading(false);
     }
@@ -214,6 +235,7 @@ const Register = () => {
           </Text>
         </View>
       </ScrollView>
+      <Toast />
     </SafeAreaView>
   );
 };

@@ -5,24 +5,33 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const GlobalContext = createContext(null);
 
 const GlobalContextProvider = ({children}) => {
-  const [state, setState] = useState({
+  const [userState, setUserState] = useState({
     user: null,
     token: "",
   });
+  const [isUserLogin, setIsUserLogin] = useState(false);
 
   useEffect(() => {
     const loadLocalStorageData = async () => {
       let data = await AsyncStorage.getItem("@auth");
       let loginData = data ? JSON.parse(data) : null;
       if (loginData) {
-        setState({ user: loginData.user, token: loginData.token });
+        setUserState({ user: loginData.user, token: loginData.token });
+        setIsUserLogin(true);
       }
     };
     loadLocalStorageData();
   }, []);
 
+  const contextValue = {
+    userState,
+    setUserState,
+    isUserLogin,
+    setIsUserLogin,
+  };
+
   return (
-   <GlobalContext.Provider value={{state, setState}}>
+   <GlobalContext.Provider value={contextValue}>
       {children}
    </GlobalContext.Provider>
   )

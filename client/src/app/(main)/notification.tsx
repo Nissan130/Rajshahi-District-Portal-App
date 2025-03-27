@@ -12,7 +12,7 @@ import FooterMenu from "@/src/components/molecules/FooterMenu";
 import { GlobalContext } from "@/src/context/globalContext";
 
 const Notification =  () => {
-  const {state} = useContext(GlobalContext);
+  const {userState} = useContext(GlobalContext);
    const [currentPage, setCurrentPage] = useState("নোটিফিকেশন");
 
   
@@ -25,9 +25,9 @@ const Notification =  () => {
         <Text>Heading</Text>
       </View>
       <View style={styles.bodyContainer}>
-        <Text>{JSON.stringify(state.user, null, 6)}</Text>
+        <Text>{JSON.stringify(userState.user, null, 6)}</Text>
         <Image
-          source={{ uri: state.user.image.url }}
+          source={{ uri: userState.user.image.url }}
           style={{ width: 120, height: 120 }}
         />
       </View>

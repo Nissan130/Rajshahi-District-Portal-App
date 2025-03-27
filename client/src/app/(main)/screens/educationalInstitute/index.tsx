@@ -1,14 +1,17 @@
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
-import React, { useEffect, useState } from "react";
 import CustomNavbar from "@/src/components/atoms/CustomNavbar";
 import { moderateScale, scale, verticalScale } from "react-native-size-matters";
 import Institution from "./institution";
+import api from "@/src/utils/api";
+import Toast from "react-native-toast-message";
 
 const EducationalInstitute = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -16,9 +19,9 @@ const EducationalInstitute = () => {
   const [filteredInstitution, setFilteredInstitution] = useState([]);
   const [institutionType, setInstitutionType] = useState("school");
   const [institutionTypeBan, setInstitutionTypeBan] = useState("");
+  const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
 
-  console.log(institutionType);
   const institutionTypeBangla = [
     "স্কুল",
     "কলেজ",
@@ -34,72 +37,88 @@ const EducationalInstitute = () => {
     "coachingCenter",
   ];
 
+  // Fetch institutions from API
   useEffect(() => {
     const fetchInstitutions = async () => {
-      const res = await fetch(
-        "http://10.1.1.108:3000/api/main/educational-institution/get-institution"
-      );
-      const { getData } = await res.json();
-      setInstitutions(getData);
+      try {
+        setLoading(true);
+        const { data } = await api.get(
+          "/main/educational-institution/get-institution"
+        );
+        setInstitutions(data.getData || []);
+      } catch (error) {
+        console.error("Fetch Error:", error);
+        Toast.show({
+          type: "error",
+          text1: "ডাটা আনতে সমস্যা হয়েছে! দয়া করে আবার চেষ্টা করুন।",
+        });
+      } finally {
+        setLoading(false);
+      }
     };
-    fetchInstitutions();
-  }, [refresh]); 
 
-  //filter data on data mount or type chnages
+    fetchInstitutions();
+  }, [refresh]);
+
+  // Filter institutions based on the selected type
   useEffect(() => {
     if (institutions.length > 0) {
-      // filter institution by specific type
-      const filteredType = institutions.filter(
+      const filtered = institutions.filter(
         (item) => item.institutionType === institutionType
       );
-      setFilteredInstitution(filteredType);
+      setFilteredInstitution(filtered);
     }
-
   }, [institutions, institutionType]);
 
-  //toggle refresh after refetching
-  const refreshInstitutions = ()=> {
-    setRefresh((prev)=> !prev)
-  }
+  // Refresh function to reload data
+  const refreshInstitutions = () => {
+    setRefresh((prev) => !prev);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <CustomNavbar />
       <View style={styles.instituteContainer}>
         <View style={styles.institutionHeadings}>
-          {InstitutionCategories.map((item, index) => {
-            return (
-              <TouchableOpacity
-                key={index}
-                activeOpacity={0.8}
-                onPress={() => {
-                  setActiveIndex(index);
-                  setInstitutionType(item);
-                  setInstitutionTypeBan(institutionTypeBangla[index]);
-                }}
-                style={[
-                  styles.institutionHeadingButton,
-                  activeIndex === index && styles.activeButton,
-                ]}
+          {InstitutionCategories.map((item, index) => (
+            <TouchableOpacity
+              key={index}
+              activeOpacity={0.8}
+              onPress={() => {
+                setActiveIndex(index);
+                setInstitutionType(item);
+                setInstitutionTypeBan(institutionTypeBangla[index]);
+              }}
+              style={[
+                styles.institutionHeadingButton,
+                activeIndex === index && styles.activeButton,
+              ]}
+            >
+              <Text
+                style={activeIndex === index && styles.activeInstitutionText}
               >
-                <Text
-                  style={activeIndex === index && styles.activeInstitutionText}
-                >
-                  {institutionTypeBangla[index]}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
+                {institutionTypeBangla[index]}
+              </Text>
+            </TouchableOpacity>
+          ))}
         </View>
-        {/* {handleInstitutionType()} */}
-        {/* render institution  */}
-        <Institution
-          institutionType={institutionType}
-          institutionTypeBan={institutionTypeBan}
-          filteredInstitution={filteredInstitution}
-          refreshInstitutions={refreshInstitutions}
-        />
+
+        {/* Show loading indicator while fetching data */}
+        {loading ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="#ff8000" />
+            <Text>লোড হচ্ছে...</Text>
+          </View>
+        ) : (
+          <Institution
+            institutionType={institutionType}
+            institutionTypeBan={institutionTypeBan}
+            filteredInstitution={filteredInstitution}
+            refreshInstitutions={refreshInstitutions}
+          />
+        )}
       </View>
+      <Toast />
     </SafeAreaView>
   );
 };
@@ -133,5 +152,10 @@ const styles = StyleSheet.create({
   activeInstitutionText: {
     color: "#ff8000",
     fontWeight: "700",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

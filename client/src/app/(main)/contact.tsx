@@ -11,43 +11,34 @@ import { moderateScale, scale, verticalScale } from "react-native-size-matters";
 import Entypo from "@expo/vector-icons/Entypo";
 import { Feather, FontAwesome5, Ionicons } from "@expo/vector-icons";
 import FooterMenu from "@/src/components/molecules/FooterMenu";
+import Toast from 'react-native-toast-message'
 
 
 const Contact =  () => {
    const [currentPage, setCurrentPage] = useState("যোগাযোগ");
-   const [thana, setThana] = useState([]);
-   const [institution, setInstitution] = useState([]);
-   //fetch data from db
-   const fetchInstitution = async ()=> {
-      try {
+
+   const [hospitals, setHospitals] = useState("");
+   
+   useEffect(()=> {
+      const fetchHospitals = async () => {
         const res = await fetch(
-          "http://10.1.1.108:3000/api/main/educational-institution/get-institution"
+          "http://10.1.1.108:3000/api/main/hospitals/get-hospitals"
         );
-
-        //destructuring the actual data got from server
-        const {getData} = await res.json();
-        const thanas = getData.map((item)=>item.thana);
-        setThana(thanas);
-        setInstitution(getData);
-      } catch (error) {
-        console.log("Error in fetching data");
+        const data = await res.json();
+        setHospitals(data);
       }
-   }
-
-   useEffect(()=>{
-    fetchInstitution();
+      fetchHospitals();
    },[])
+  
+    
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={"red"} />
       <View style={styles.headerContainer}>
         <Text>Heading</Text>
       </View>
-      <View style={styles.bodyContainer}>
-        {institution.map((item, index) => (
-          <Text>{item.establishedYear}</Text>
-        ))}
-      </View>
+      <View style={styles.bodyContainer}></View>
+      <Text>{JSON.stringify(hospitals,null,4)}</Text>
 
       {/* footer menu */}
       <FooterMenu currentPage={currentPage} setCurrentPage={setCurrentPage} />
@@ -63,11 +54,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   headerContainer: {
+    
     backgroundColor: "#fff",
     width: "100%",
     height: verticalScale(50),
   },
   bodyContainer: {
-    flex: 1,
+  
   },
 });

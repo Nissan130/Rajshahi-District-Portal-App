@@ -10,49 +10,71 @@ import {
 } from "react-native";
 import { scale, verticalScale, moderateScale } from "react-native-size-matters";
 import { router } from "expo-router";
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import ButtonComponent from "@/src/components/atoms/ButtonComponent";
 import InputComponent from "@/src/components/atoms/InputComponent";
 import PasswordComponent from "@/src/components/atoms/PasswordInput";
 import { GlobalContext } from "@/src/context/globalContext";
+import Toast from "react-native-toast-message";
+import api from "@/src/utils/api";
 
 const Login = () => {
-  const {setState} = useContext(GlobalContext);
+  const { setUserState } = useContext(GlobalContext);
   const [hidePassword, setHidePassword] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
-  
+
   //handle submit for login
   const handleSubmit = async () => {
     try {
+      if (!email || !password) {
+        Toast.show({
+          type: "error",
+          text1: "অনুগ্রহ করে সমস্ত প্রয়োজনীয় তথ্য পূরণ করুন",
+        });
+        return;
+      }
 
       const formData = new FormData();
       formData.append("email", email);
       formData.append("password", password);
-     
-      //send data to server
-      const res = await fetch("http://10.1.1.108:3000/api/auth/login", {
-        method: "POST",
-        body: formData,
-      });
 
-      const data = await res.json();
+      // //send data to server
+      // const res = await fetch("http://10.1.1.108:3000/api/auth/login", {
+      //   method: "POST",
+      //   body: formData,
+      // });
 
+      // const data = await res.json();
+      
+      //send data using axios
+      const {data} = await api.post("/auth/login",formData);
       //save data to async storage (local storage)
-      setState(data);
+      setUserState(data);
       await AsyncStorage.setItem("@auth", JSON.stringify(data));
 
-      if (res.ok) {
-        Alert.alert(data?.message);
-        router.push("/(main)/home");
+      if (data.success) {
+        Toast.show({
+          type: "success",
+          text1: data?.message
+        });
+
+        setTimeout(() => {
+          router.push("/(main)/home");
+        }, 1000);
       } else {
-        Alert.alert(data?.message);
+        Toast.show({
+          type: 'error',
+          text1: data?.message 
+        })
       }
     } catch (error) {
-      console.error(error);
-      Alert.alert("Something went wrong. Try Again");
+      console.error(error)
+      Toast.show({
+        type: "error",
+        text1: "কিছু ভুল হয়েছে! দয়া করে আবার চেষ্টা করুন",
+      });
     }
   };
 
@@ -117,6 +139,7 @@ const Login = () => {
           </Text>
         </View>
       </ScrollView>
+      <Toast />
     </SafeAreaView>
   );
 };

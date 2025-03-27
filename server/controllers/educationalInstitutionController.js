@@ -16,7 +16,7 @@ const addEducationalInstitutionController = async (req, res) => {
     const file = getDataUri(req.file);
 
     if (!file) {
-      return res.status(500).send({
+      return res.status(400).json({
         success: false,
         message: "Image is required",
       });
@@ -32,7 +32,7 @@ const addEducationalInstitutionController = async (req, res) => {
         !address ||
         !institutionType
       ) {
-        return res.status(500).send({
+        return res.status(400).json({
             success: false, 
             message: "All field are required"
         })
@@ -53,14 +53,14 @@ const addEducationalInstitutionController = async (req, res) => {
       //save data to DB
       await data.save();
 
-      return res.status(500).send({
+      return res.status(201).json({
         success: true, 
         message: "Insitution added successfully",
         data
       })
     
   } catch (error) {
-    return res.status(500).send({
+    return res.status(400).json({
         success: false, 
         message: "Error in api",
         error: error.message
@@ -72,13 +72,13 @@ const addEducationalInstitutionController = async (req, res) => {
 const getEducationalInstitutionController = async (req, res) => {
     try{
         const getData = await educationalInstitutionModel.find();
-        return res.status(200).send({
+        return res.status(200).json({
           success: true, 
           message: "Got data successfully",
           getData
         })
     } catch(error) {
-      return res.status(500).send({
+      return res.status(400).json({
         success: false,
         message: "Urror in getting data",
         error: error.message

@@ -11,6 +11,7 @@ import * as mime from "react-native-mime-types";
 import { router } from "expo-router";
 import thana_list from "@/src/assets/thana_list";
 import Loading from "../atoms/Loading";
+import api from "@/src/utils/api";
 
 const AddEducationalInstitute = ({
   openModal,
@@ -65,22 +66,25 @@ const AddEducationalInstitute = ({
       formData.append("address", address);
       formData.append("institutionType", institutionType);
 
-      const res = await fetch(
-        "http://10.1.1.108:3000/api/main/educational-institution/add-institution",
-        {
-          method: "POST",
-          body: formData,
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
+      // const res = await fetch(
+      //   "http://10.1.1.108:3000/api/main/educational-institution/add-institution",
+      //   {
+      //     method: "POST",
+      //     body: formData,
+      //     headers: {
+      //       "Content-Type": "multipart/form-data",
+      //     },
+      //   }
+      // );
+      const { data } = await api.post(
+        "/main/educational-institution/add-institution", formData
       );
       refreshInstitutions(); //re-fetch data after adding
 
-      const data = await res.json();
+      // const data = await res.json();
       console.log(data);
 
-      if (res.ok) {
+      if (data.success) {
         Alert.alert(data?.message);
       } else {
         Alert.alert(data?.message);

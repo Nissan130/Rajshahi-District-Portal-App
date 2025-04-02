@@ -137,8 +137,8 @@ const Register = () => {
             setImage={setImage}
             imageStyles={{
               borderRadius: "100%",
-              width: scale(100),
-              height: verticalScale(100),
+              width: scale(70),
+              height: verticalScale(70),
             }}
           />
 

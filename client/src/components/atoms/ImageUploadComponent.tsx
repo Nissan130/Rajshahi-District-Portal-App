@@ -71,7 +71,7 @@ const ImageUploadComponent = ({ image, setImage, imageStyles }: any) => {
           source={
             image
               ? { uri: image }
-              : require("@/src/assets/images/upload_logo.png")
+              : require("@/src/assets/images/gallery_icon.png")
           }
         />
       </TouchableOpacity>
@@ -110,8 +110,8 @@ export default ImageUploadComponent;
 
 const styles = StyleSheet.create({
   imageContainer: {
-    width: scale(140),
-    height: verticalScale(120),
+    width: scale(100),
+    height: verticalScale(100),
     borderRadius: moderateScale(10),
     overflow: "hidden",
     marginBottom: verticalScale(10),

@@ -47,7 +47,7 @@ const InputComponent = ({
     left: 40,
     top: animatedLabel.interpolate({
       inputRange: [0, 1], // Fixed input range
-      outputRange: [17, -8], // Moves label up when focused or has value
+      outputRange: [16, -8], // Moves label up when focused or has value
     }),
     fontSize: animatedLabel.interpolate({
       inputRange: [0, 1],
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     borderWidth: moderateScale(1),
     borderColor: "#aaa",
     borderRadius: moderateScale(8),
-    paddingVertical: verticalScale(6),
+    paddingVertical: verticalScale(4),
     paddingHorizontal: scale(10),
     marginBottom: verticalScale(15),
     position: "relative",

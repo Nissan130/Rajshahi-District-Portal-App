@@ -20,7 +20,8 @@ import Toast from "react-native-toast-message";
 import api from "@/src/utils/api";
 
 const Login = () => {
-  const { setUserState } = useContext(GlobalContext);
+  const { isUserLogin, setIsUserLogin,userState, setUserState } =
+    useContext(GlobalContext);
   const [hidePassword, setHidePassword] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -40,24 +41,16 @@ const Login = () => {
       formData.append("email", email);
       formData.append("password", password);
 
-      // //send data to server
-      // const res = await fetch("http://10.1.1.108:3000/api/auth/login", {
-      //   method: "POST",
-      //   body: formData,
-      // });
-
-      // const data = await res.json();
-      
       //send data using axios
-      const {data} = await api.post("/auth/login",formData);
-      //save data to async storage (local storage)
-      setUserState(data);
+      const { data } = await api.post("/auth/login", formData);
       await AsyncStorage.setItem("@auth", JSON.stringify(data));
+      setUserState(data);
 
       if (data.success) {
+        setIsUserLogin(true)
         Toast.show({
           type: "success",
-          text1: data?.message
+          text1: data?.message,
         });
 
         setTimeout(() => {
@@ -65,12 +58,12 @@ const Login = () => {
         }, 1000);
       } else {
         Toast.show({
-          type: 'error',
-          text1: data?.message 
-        })
+          type: "error",
+          text1: data?.message,
+        });
       }
     } catch (error) {
-      console.error(error)
+      console.error(error);
       Toast.show({
         type: "error",
         text1: "কিছু ভুল হয়েছে! দয়া করে আবার চেষ্টা করুন",

@@ -15,9 +15,11 @@ import hospital_list from "@/src/assets/hospital_list";
 import AddItemIcon from "@/src/components/atoms/AddItemIcon";
 import moment from 'moment'
 import api from "@/src/utils/api";
+import AddHospital from "@/src/components/molecules/addHospital";
 
 const Hospitals = () => {
   const [hospitals, setHospitals] = useState([]);
+  const [openHospitalModal, setOpenHospitalModal] = useState(false);
 
   //fetch hospitals
   useEffect(() => {
@@ -93,7 +95,12 @@ const Hospitals = () => {
       <SearchInput placeholderText="হাসপাতাল খুজুন ... " />
       <FlatList data={hospitals} renderItem={renderItem} numColumns={1} />
       {/* add item plus icon  */}
-      <AddItemIcon />
+      <AddItemIcon onPress={() => setOpenHospitalModal(true)} />
+
+      <AddHospital
+        openHospitalModal={openHospitalModal}
+        setOpenHospitalModal={setOpenHospitalModal}
+      />
     </SafeAreaView>
   );
 };

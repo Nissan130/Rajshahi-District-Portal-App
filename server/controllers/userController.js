@@ -111,7 +111,7 @@ const loginController = async (req, res) => {
     // Check if user exists by email
     const user = await userModel.findOne({ email });
     if (!user) {
-      return res.status(401).json({
+      return res.status(400).json({
         success: false,
         message: "আপনার ইমেইলটি সঠিক নয়",
       });
@@ -133,15 +133,16 @@ const loginController = async (req, res) => {
       success: true,
       message: "লগইন সফল হয়েছে",
       token,
-      user: {
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        mobileNumber: user.mobileNumber,
-        profession: user.profession,
-        address: user.address,
-        image: user.image,
-      },
+      user
+      // user: {
+      //   _id: user._id,
+      //   name: user.name,
+      //   email: user.email,
+      //   mobileNumber: user.mobileNumber,
+      //   profession: user.profession,
+      //   address: user.address,
+      //   image: user.image,
+      // },
     });
   } catch (error) {
     return res.status(500).json({

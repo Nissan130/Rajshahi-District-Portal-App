@@ -41,7 +41,9 @@ const HomeItemList = () => {
 export default HomeItemList;
 
 const styles = StyleSheet.create({
-  listContainer: {},
+  listContainer: {
+    marginBottom: verticalScale(60)
+  },
   row: {
     gap: scale(10),
     paddingHorizontal: scale(10),

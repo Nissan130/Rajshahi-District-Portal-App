@@ -4,6 +4,7 @@ const connectDB = require("./config/db");
 const cors = require("cors");
 const cloudinary = require("cloudinary");
 const multer = require("multer");
+const morgan = require('morgan')
 
 dotenv.config();
 const app = express();
@@ -23,6 +24,7 @@ const corsOptions = {
   allowedHeaders: ["Content-Type", "Authorization"],
 };
 app.use(cors(corsOptions));
+app.use(morgan('dev'));
 
 // Cloudinary Configuration
 cloudinary.v2.config({

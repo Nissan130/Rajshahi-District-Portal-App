@@ -42,9 +42,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     justifyContent: "space-between",
+    position: 'relative',
   },
   bodyContainer: {
     flex: 1,
-    paddingLeft: scale(10)
+    paddingLeft: scale(10),
+    // marginBottom: verticalScale(20)
   },
 });

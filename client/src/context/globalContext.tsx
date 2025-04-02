@@ -9,19 +9,21 @@ const GlobalContextProvider = ({children}) => {
     user: null,
     token: "",
   });
-  const [isUserLogin, setIsUserLogin] = useState(false);
+  const [isUserLogin, setIsUserLogin] = useState(true);
 
   useEffect(() => {
-    const loadLocalStorageData = async () => {
+    const checkAuth = async () => {
       let data = await AsyncStorage.getItem("@auth");
       let loginData = data ? JSON.parse(data) : null;
       if (loginData) {
         setUserState({ user: loginData.user, token: loginData.token });
         setIsUserLogin(true);
       }
+      console.log("Global Context: ", isUserLogin); 
+      console.log("Global Context: ", userState); 
     };
-    loadLocalStorageData();
-  }, []);
+     checkAuth();
+  }, [isUserLogin]);
 
   const contextValue = {
     userState,

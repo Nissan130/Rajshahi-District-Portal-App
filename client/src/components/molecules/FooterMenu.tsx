@@ -76,7 +76,9 @@ const styles = StyleSheet.create({
     paddingBottom: verticalScale(10),
     borderTopWidth: 1,
     borderColor: "#eee",
-    elevation: 10,
+    elevation: 3,
+    position: 'absolute',
+    bottom: 0
   },
   footerButton: {
     alignItems: "center",

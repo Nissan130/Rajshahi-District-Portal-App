@@ -50,7 +50,6 @@ export default DropDownPickerComponent;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     marginBottom: verticalScale(35),
     marginTop: verticalScale(20),
   },

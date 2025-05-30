@@ -20,6 +20,7 @@ import AddHospital from "@/src/components/molecules/addHospital";
 const Hospitals = () => {
   const [hospitals, setHospitals] = useState([]);
   const [openHospitalModal, setOpenHospitalModal] = useState(false);
+  const [refresh, setRefresh] = useState(false);
 
   //fetch hospitals
   useEffect(() => {
@@ -32,11 +33,15 @@ const Hospitals = () => {
       setHospitals(data.getHospitalData);
     };
     fetchHospitals();
-  }, []);
+  }, [refresh]);
 
   //format date
   const formatDate = (isoDate) => {
     return moment(isoDate).format("D MMMM YYYY");
+  }
+
+  const refresHospitals = () => {
+    setRefresh((prev) => !prev);
   }
 
   const renderItem = ({ item }: any) => (
@@ -100,6 +105,7 @@ const Hospitals = () => {
       <AddHospital
         openHospitalModal={openHospitalModal}
         setOpenHospitalModal={setOpenHospitalModal}
+        refresHospitals={refresHospitals}
       />
     </SafeAreaView>
   );

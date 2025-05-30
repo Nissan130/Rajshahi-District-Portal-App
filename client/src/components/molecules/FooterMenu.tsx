@@ -10,11 +10,11 @@ const menuItems = [
     icon: (color) => <Entypo name="home" size={24} color={color} />,
     route: "/(main)/home",
   },
-  {
-    name: "যোগাযোগ",
-    icon: (color) => <Feather name="phone" size={24} color={color} />,
-    route: "/(main)/contact",
-  },
+  // {
+  //   name: "যোগাযোগ",
+  //   icon: (color) => <Feather name="phone" size={24} color={color} />,
+  //   route: "/(main)/contact",
+  // },
   {
     name: "নোটিফিকেশন",
     icon: (color) => <Ionicons name="notifications" size={24} color={color} />,
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    gap: scale(2),
+    gap: scale(30),
     width: "100%",
     backgroundColor: "#fff",
     paddingVertical: verticalScale(5),
@@ -84,6 +84,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: verticalScale(2),
     paddingHorizontal: scale(18),
+    // backgroundColor: 'red'
   },
   footerButtonText: {
     fontSize: moderateScale(14),

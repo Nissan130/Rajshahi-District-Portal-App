@@ -35,12 +35,12 @@ const Index = () => {
     useContext(GlobalContext);
   const [openModal, setOpenModal] = useState(false);
 
-  //open facebook page
-  const openFbPage = () => {
-    Linking.openURL("https://web.facebook.com/").catch((err) =>
-      console.error("Error in opening link", err)
-    );
-  };
+  // //open facebook page
+  // const openFbPage = () => {
+  //   Linking.openURL("https://web.facebook.com/").catch((err) =>
+  //     console.error("Error in opening link", err)
+  //   );
+  // };
 
   
 
@@ -94,7 +94,6 @@ const Index = () => {
           <TouchableOpacity
             style={styles.profileMenuList}
             activeOpacity={0.8}
-            onPress={openFbPage}
           >
             <View style={styles.title_icon}>
               <Ionicons name="hourglass-outline" size={24} color="#2754cc" />
@@ -107,7 +106,6 @@ const Index = () => {
           <TouchableOpacity
             style={styles.profileMenuList}
             activeOpacity={0.8}
-            onPress={openFbPage}
           >
             <View style={styles.title_icon}>
               <Ionicons name="bookmark-outline" size={24} color="#2754cc" />

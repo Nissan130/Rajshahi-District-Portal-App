@@ -40,6 +40,7 @@ app.use(
   require("./routes/educationalInstitutionRoute")
 );
 app.use("/api/main/hospitals", require("./routes/hospitalRoute"));
+app.use("/api/main/diagnostics", require("./routes/diagnosticRoute"));
 
 // Start Server
 app.listen(PORT, () => {

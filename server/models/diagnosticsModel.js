@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const hospitalSchema = new mongoose.Schema(
+const diagnosticSchema = new mongoose.Schema(
   {
     adderId: {
       type: String,
@@ -20,7 +20,7 @@ const hospitalSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    hospitalImage: {
+    diagnosticImage: {
       public_id: {
         type: String,
         required: true,
@@ -30,7 +30,7 @@ const hospitalSchema = new mongoose.Schema(
         required: true,
       },
     },
-    hospitalName: {
+    diagnosticName: {
       type: String,
       required: true,
     },
@@ -50,4 +50,4 @@ const hospitalSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Hospitals", hospitalSchema);
+module.exports = mongoose.model("Diagnostics", diagnosticSchema);

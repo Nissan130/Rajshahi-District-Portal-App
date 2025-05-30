@@ -21,7 +21,7 @@ const data = [
     id: "4",
     title: "ডায়াগনস্টিক",
     image: require("@/src/assets/images/diagnostic.png"),
-    route: "/screens/doctors",
+    route: "/screens/diagnostics",
   },
   {
     id: "5",

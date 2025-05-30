@@ -1,6 +1,6 @@
 import { View, Text, Modal, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useContext } from "react";
-import { moderateScale, verticalScale } from "react-native-size-matters";
+import { moderateScale, scale, verticalScale } from "react-native-size-matters";
 import ButtonComponent from "./ButtonComponent";
 import { GlobalContext } from "@/src/context/globalContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -52,20 +52,32 @@ const LogoutModal = ({ openModal, setOpenModal }) => {
           </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
-              style={styles.button}
+              style={styles.noButton}
               activeOpacity={0.7}
               onPress={() => setOpenModal(false)}
             >
-              <Text style={{ fontSize: moderateScale(15), fontWeight: "700" }}>
+              <Text
+                style={{
+                  fontSize: moderateScale(15),
+                  fontWeight: "700",
+                  color: "#fff",
+                }}
+              >
                 না
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.button}
+              style={styles.yesButton}
               activeOpacity={0.7}
               onPress={handleLogout}
             >
-              <Text style={{ fontSize: moderateScale(15), fontWeight: "700" }}>
+              <Text
+                style={{
+                  fontSize: moderateScale(15),
+                  fontWeight: "700",
+                  color: "#fff",
+                }}
+              >
                 হ্যাঁ
               </Text>
             </TouchableOpacity>
@@ -98,9 +110,16 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginTop: verticalScale(15),
   },
-  button: {
-    backgroundColor: "#ddd",
-    padding: moderateScale(10),
+  yesButton: {
+    backgroundColor: "#008000",
+    paddingVertical: verticalScale(10),
+    paddingHorizontal: scale(15),
+    borderRadius: moderateScale(10),
+  },
+  noButton: {
+    backgroundColor: "#FF0000",
+    paddingVertical: verticalScale(10),
+    paddingHorizontal: scale(15),
     borderRadius: moderateScale(10),
   },
 });

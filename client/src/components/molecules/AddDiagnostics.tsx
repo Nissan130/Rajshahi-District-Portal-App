@@ -7,14 +7,14 @@ import ButtonComponent from "../atoms/ButtonComponent";
 import DropDownPickerComponent from "../atoms/DropDownPickerComponent";
 import thana_list from "@/src/assets/thana_list";
 import { scale } from "react-native-size-matters";
-import { GlobalContext } from "@/src/context/globalContext";
-import * as mime from "react-native-mime-types";
+import * as mime from "react-native-mime-types"; 
 import api from "@/src/utils/api";
+import { GlobalContext } from "@/src/context/globalContext";
 
-const AddHospital = ({
-  openHospitalModal,
-  setOpenHospitalModal,
-  refresHospitals,
+const AddDiagnostics = ({
+  openDiagnosticsModal,
+  setOpenDiagnosticsModal,
+  refreshDiagnostics,
 }) => {
   //user info
   const { userState } = useContext(GlobalContext);
@@ -31,29 +31,29 @@ const AddHospital = ({
   const [dropDownItems, setDropDownItems] = useState(thana_list);
 
   //input field value
-  const [hospitalName, setHospitalName] = useState("");
+  const [diagnosticName, setDiagnosticName] = useState("");
   const [thana, setThana] = useState("");
   const [address, setAddress] = useState("");
-  const [hotlineNumber, setHotlineNumber] = useState("");
+  const [hotlineNumber, sethotlineNumber] = useState("");
   //upload image
   const [image, setImage] = useState<string | null>(null);
   const [isLoading, setIsloading] = useState(false);
 
-  // console.log(hospitalName)
+  // console.log(diagnosticName)
   // console.log(thana)
   // console.log(address)
   // console.log(hotlineNumber)
   // console.log(image)
 
   //handle submit
-  const handleSubmitHospital = async () => {
+  const handleSubmitDiagnostic = async () => {
     try {
       if (
         !adderId ||
         !adderImageId ||
         !adderImageUrl ||
         !adderName ||
-        !hospitalName ||
+        !diagnosticName ||
         !thana ||
         !address ||
         !hotlineNumber ||
@@ -80,7 +80,7 @@ const AddHospital = ({
       formData.append("adderImageId", adderImageId);
       formData.append("adderImageUrl", adderImageUrl);
       formData.append("adderName", adderName);
-      formData.append("hospitalName", hospitalName);
+      formData.append("diagnosticName", diagnosticName);
       formData.append("thana", thana);
       formData.append("address", address);
       formData.append("hotlineNumber", hotlineNumber);
@@ -96,8 +96,11 @@ const AddHospital = ({
       //   }
       // );
       console.log(formData);
-      const { data } = await api.post("/main/hospitals/add-hospital", formData);
-      refresHospitals(); //re-fetch data after adding
+      const { data } = await api.post(
+        "/main/diagnostics/add-diagnostics",
+        formData
+      );
+      refreshDiagnostics(); //re-fetch data after adding
 
       // const data = await res.json();
       console.log(data);
@@ -107,30 +110,30 @@ const AddHospital = ({
       } else {
         Alert.alert(data?.message);
       }
-      setOpenHospitalModal(false);
+      setOpenDiagnosticsModal(false);
     } catch (error) {
       console.error(error);
       alert("Something went wrong");
     } finally {
       setIsloading(false);
-      setHospitalName("");
+      setDiagnosticName("");
       setThana("");
-      setAddress("");
-      setHotlineNumber("");
-      setImage(null);
+      setAddress(""), sethotlineNumber(""), setImage(null);
     }
   };
 
   return (
     <Modal
-      visible={openHospitalModal}
+      visible={openDiagnosticsModal}
       transparent={true}
-      onRequestClose={() => setOpenHospitalModal(false)}
+      onRequestClose={() => setOpenDiagnosticsModal(false)}
     >
       <View style={styles.modalContainer}>
         <View style={styles.modalBody}>
           <View style={styles.imageContainer}>
-            <Text style={styles.headingText}>হাসপাতালের তথ্য যুক্ত করুন</Text>
+            <Text style={styles.headingText}>
+              ডায়াগনস্টিক সেন্টারের তথ্য যুক্ত করুন
+            </Text>
             <ImageUploadComponent
               image={image}
               setImage={setImage}
@@ -139,13 +142,13 @@ const AddHospital = ({
           </View>
           <View style={styles.formContainer}>
             <InputComponent
-              label="হাসপাতালের নাম"
-              icon="hospital-alt"
-              iconPackage="FontAwesome5"
+              label="ডায়াগনস্টিক সেন্টারের নাম"
+              icon="institution"
+              iconPackage="FontAwesome"
               keyboardType="default"
-              value={hospitalName}
+              value={diagnosticName}
               setValue={(e: any) => {
-                setHospitalName(e);
+                setDiagnosticName(e);
               }}
             />
             <DropDownPickerComponent
@@ -173,7 +176,7 @@ const AddHospital = ({
               keyboardType="number"
               value={hotlineNumber}
               setValue={(e: any) => {
-                setHotlineNumber(e);
+                sethotlineNumber(e);
               }}
             />
           </View>
@@ -183,14 +186,14 @@ const AddHospital = ({
               style={styles.cancelButton}
               activeOpacity={0.8}
               onPress={() => {
-                setOpenHospitalModal(false), setImage(null);
+                setOpenDiagnosticsModal(false), setImage(null);
               }}
             />
             <ButtonComponent
               buttonText="সাবমিট করুন"
               style={styles.submitButton}
               activeOpacity={0.8}
-              onPress={handleSubmitHospital}
+              onPress={handleSubmitDiagnostic}
             />
           </View>
         </View>
@@ -199,7 +202,7 @@ const AddHospital = ({
   );
 };
 
-export default AddHospital;
+export default AddDiagnostics;
 
 const styles = StyleSheet.create({
   modalContainer: {

@@ -9,7 +9,7 @@ const GlobalContextProvider = ({children}) => {
     user: null,
     token: "",
   });
-  const [isUserLogin, setIsUserLogin] = useState(true);
+  const [isUserLogin, setIsUserLogin] = useState(false);
 
   useEffect(() => {
     const checkAuth = async () => {

@@ -14,7 +14,7 @@ const Root = () => {
     } else {
       router.replace("/(auth)/login");
     }
-  }, []);
+  }, [isUserLogin]);
 
   return (
       <Stack screenOptions={{ headerShown: false }} />

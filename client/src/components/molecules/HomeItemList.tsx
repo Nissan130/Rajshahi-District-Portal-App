@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import React from "react";
 import { moderateScale, scale, verticalScale } from "react-native-size-matters";
-import data from "@/src/assets/list_data";
+import data from "@/src/assets/categories_list";
 import { router, useNavigation } from "expo-router";
 
 const HomeItemList = () => {

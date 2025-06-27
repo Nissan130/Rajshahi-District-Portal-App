@@ -51,7 +51,7 @@ const data = [
     id: "9",
     title: "শিক্ষক",
     image: require("@/src/assets/images/teacher.png"),
-    route: "/screens/doctors",
+    route: "/screens/teachers",
   },
   {
     id: "10",

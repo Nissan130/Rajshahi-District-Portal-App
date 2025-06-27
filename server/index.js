@@ -33,6 +33,10 @@ cloudinary.v2.config({
   api_secret: process.env.CLOUDINARY_SECRET,
 });
 
+app.get("/", (req, res) => {
+  res.send("React Native API is running!");
+});
+
 // Routes
 app.use("/api/auth", require("./routes/userRoutes"));
 app.use(

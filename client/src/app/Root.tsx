@@ -6,12 +6,14 @@ import { useRouter } from 'expo-router';
 
 const Root = () => {
   const router = useRouter();
-  const { isUserLogin } = useContext(GlobalContext);
+  const { isUserLogin } = useContext(GlobalContext); 
+
 
   useEffect(() => {
+
     if (isUserLogin) {
       router.replace("/(main)/home");
-    } else {
+    }  else {
       router.replace("/(auth)/login");
     }
   }, [isUserLogin]);

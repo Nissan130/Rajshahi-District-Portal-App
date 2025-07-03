@@ -82,7 +82,7 @@ const Register = () => {
       // console.log(data);
 
       //send data using axios
-      const {data} = await api.post("/auth/register", formData)
+      const { data } = await api.post("/auth/register", formData)
       console.log(data)
 
       if (data.success) {
@@ -100,11 +100,24 @@ const Register = () => {
           text1: data?.message,
         });
       }
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      let errorMessage = "কিছু ভুল হয়েছে! দয়া করে আবার চেষ্টা করুন";
+
+      // Handle Axios errors
+      if (error?.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      } else if (error?.message) {
+        errorMessage = error.message;
+      }
+
+      // Log only in development to avoid visual logs in production
+      if (__DEV__) {
+        console.error("Registration Error:", error);
+      }
+
       Toast.show({
         type: "error",
-        text1: "কিছু ভুল হয়েছে! দয়া করে আবার চেষ্টা করুন",
+        text1: errorMessage,
       });
     } finally {
       setLoading(false);

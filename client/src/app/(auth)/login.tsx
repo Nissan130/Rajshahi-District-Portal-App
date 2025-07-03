@@ -20,7 +20,7 @@ import Toast from "react-native-toast-message";
 import api from "@/src/utils/api";
 
 const Login = () => {
-  const { isUserLogin, setIsUserLogin,userState, setUserState } =
+  const { isUserLogin, setIsUserLogin, userState, setUserState } =
     useContext(GlobalContext);
   const [hidePassword, setHidePassword] = useState(true);
   const [email, setEmail] = useState("");
@@ -63,11 +63,20 @@ const Login = () => {
         });
       }
     } catch (error) {
-      console.error(error);
+      let errorMessage = "কিছু ভুল হয়েছে! দয়া করে আবার চেষ্টা করুন";
+
+      if (error?.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      } else if (error?.message) {
+        errorMessage = error.message;
+      }
+
       Toast.show({
         type: "error",
-        text1: "কিছু ভুল হয়েছে! দয়া করে আবার চেষ্টা করুন",
+        text1: errorMessage,
       });
+
+      console.error("Error details:", error);
     }
   };
 

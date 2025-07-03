@@ -98,7 +98,7 @@ export default Index
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#f5f5f5",
   },
   hospitalContainer: {
     flexDirection: "column",
@@ -107,7 +107,9 @@ const styles = StyleSheet.create({
     padding: moderateScale(10),
     // borderWidth: 1,
     elevation: 1,
-    borderRadius: moderateScale(10)
+    borderRadius: moderateScale(10),
+    // borderColor: "#f5f5f5",
+    backgroundColor: '#fff'
   },
   adderInfo: {
     flexDirection: "row",

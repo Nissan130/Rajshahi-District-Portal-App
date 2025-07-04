@@ -129,7 +129,7 @@ const loginController = async (req, res) => {
     // Generate JWT Token
     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
-    return res.status(200).json({
+    return res.status(201).json({
       success: true,
       message: "লগইন সফল হয়েছে",
       token,

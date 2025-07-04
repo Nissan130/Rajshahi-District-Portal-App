@@ -6,7 +6,6 @@ import {
   SafeAreaView,
   StatusBar,
   ScrollView,
-  Alert,
   ActivityIndicator,
 } from "react-native";
 import { scale, verticalScale, moderateScale } from "react-native-size-matters";
@@ -18,7 +17,7 @@ import InputComponent from "@/src/components/atoms/InputComponent";
 import PasswordComponent from "@/src/components/atoms/PasswordInput";
 import ImageUploadComponent from "@/src/components/atoms/ImageUploadComponent";
 import Toast from "react-native-toast-message";
-import api from '@/src/utils/api'
+import api from "@/src/utils/api";
 
 const Register = () => {
   const [hidePassword, setHidePassword] = useState(true);
@@ -29,10 +28,8 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [profession, setProfession] = useState("");
   const [address, setAddress] = useState("");
-
   const [loading, setLoading] = useState(false);
 
-  //handle on click register
   const handleSubmit = async () => {
     try {
       if (
@@ -50,17 +47,15 @@ const Register = () => {
         });
         return;
       }
-      setLoading(true);
-      //get actual file type
-      const imageType = mime.lookup(image) || "image/jpg";
 
-      console.log(imageType);
+      setLoading(true);
+      const imageType = mime.lookup(image) || "image/jpeg";
 
       const formData = new FormData();
       formData.append("image", {
         uri: image,
-        name: `profile.${imageType.split("/")[1]}`, // File name
-        type: imageType, // MIME type
+        name: `profile.${imageType.split("/")[1]}`,
+        type: imageType,
       } as any);
 
       formData.append("name", name);
@@ -70,25 +65,12 @@ const Register = () => {
       formData.append("profession", profession);
       formData.append("address", address);
 
-      // const res = await fetch("http://10.1.1.108:3000/api/auth/register", {
-      //   method: "POST",
-      //   body: formData,
-      //   headers: {
-      //     "Content-Type": "multipart/form-data",
-      //   },
-      // });
-
-      // const data = await res.json();
-      // console.log(data);
-
-      //send data using axios
-      const { data } = await api.post("/auth/register", formData)
-      console.log(data)
+      const { data } = await api.post("/auth/register", formData);
 
       if (data.success) {
         Toast.show({
           type: "success",
-          text1: data?.message,
+          text1: data.message,
         });
 
         setTimeout(() => {
@@ -100,26 +82,27 @@ const Register = () => {
           text1: data?.message,
         });
       }
-    } catch (error: any) {
+    } catch (error) {
       let errorMessage = "কিছু ভুল হয়েছে! দয়া করে আবার চেষ্টা করুন";
 
-      // Handle Axios errors
       if (error?.response?.data?.message) {
         errorMessage = error.response.data.message;
       } else if (error?.message) {
         errorMessage = error.message;
       }
 
-      // Log only in development to avoid visual logs in production
-      if (__DEV__) {
-        console.error("Registration Error:", error);
-      }
-
       Toast.show({
         type: "error",
         text1: errorMessage,
       });
-    } finally {
+
+        // ✅ Optional: Only log in development mode (safe)
+      if (__DEV__) {
+        console.log("Registration error:", errorMessage);
+      }
+    }
+
+    finally {
       setLoading(false);
     }
   };
@@ -135,7 +118,6 @@ const Register = () => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={"lightblue"} />
-
       <ScrollView
         style={styles.scrollContainer}
         contentContainerStyle={styles.contentContainer}
@@ -143,28 +125,27 @@ const Register = () => {
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.registerContainer}>
-          <Text style={styles.register_heading}>নতুন একাউন্ট খুলুন </Text>
-          {/* image fields  */}
+          <Text style={styles.register_heading}>নতুন একাউন্ট খুলুন</Text>
+
+          {/* Image upload */}
           <ImageUploadComponent
             image={image}
             setImage={setImage}
             imageStyles={{
-              borderRadius: "100%",
+              borderRadius: 100,
               width: scale(70),
               height: verticalScale(70),
             }}
           />
 
-          {/* Register Fields */}
+          {/* Input Fields */}
           <InputComponent
             label="আপনার নাম"
             icon="user"
             keyboardType="default"
             iconPackage="FontAwesome"
             value={name}
-            setValue={(e: any) => {
-              setName(e);
-            }}
+            setValue={setName}
           />
           <InputComponent
             label="আপনার মোবাইল নাম্বার"
@@ -172,9 +153,7 @@ const Register = () => {
             keyboardType="numeric"
             iconPackage="FontAwesome"
             value={mobileNumber}
-            setValue={(e: any) => {
-              setMobileNumber(e);
-            }}
+            setValue={setMobileNumber}
           />
           <PasswordComponent
             label="আপনার পাসওয়ার্ড"
@@ -184,9 +163,7 @@ const Register = () => {
             hidePassword={hidePassword}
             onPress={showPassword}
             value={password}
-            setValue={(e: any) => {
-              setPassword(e);
-            }}
+            setValue={setPassword}
           />
           <InputComponent
             label="আপনার ই-মেইল"
@@ -194,9 +171,7 @@ const Register = () => {
             keyboardType="email-address"
             iconPackage="MaterialIcons"
             value={email}
-            setValue={(e: any) => {
-              setEmail(e);
-            }}
+            setValue={setEmail}
           />
           <InputComponent
             label="আপনার পেশা"
@@ -204,9 +179,7 @@ const Register = () => {
             keyboardType="default"
             iconPackage="SimpleLineIcons"
             value={profession}
-            setValue={(e: any) => {
-              setProfession(e);
-            }}
+            setValue={setProfession}
           />
           <InputComponent
             label="আপনার ঠিকানা"
@@ -214,20 +187,16 @@ const Register = () => {
             keyboardType="default"
             iconPackage="SimpleLineIcons"
             value={address}
-            setValue={(e: any) => {
-              setAddress(e);
-            }}
+            setValue={setAddress}
           />
 
-          {/* Register Button */}
+          {/* Submit Button */}
           <ButtonComponent
             buttonText={
               loading ? (
                 <View style={{ flexDirection: "row", gap: 10 }}>
                   <ActivityIndicator color="#fff" />
-                  <Text
-                    style={{ color: "#fff", fontSize: 16, fontWeight: "bold" }}
-                  >
+                  <Text style={{ color: "#fff", fontSize: 16, fontWeight: "bold" }}>
                     অপেক্ষা করুন
                   </Text>
                 </View>
@@ -239,7 +208,7 @@ const Register = () => {
             style={{ width: "100%" }}
           />
 
-          {/* Login Link */}
+          {/* Link to login */}
           <Text style={styles.account_text}>
             একাউন্ট করা আছে?{" "}
             <Text style={styles.link_text} onPress={gotToLogin}>
@@ -254,6 +223,7 @@ const Register = () => {
 };
 
 export default Register;
+
 
 const styles = StyleSheet.create({
   container: {

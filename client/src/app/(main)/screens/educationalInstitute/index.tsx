@@ -46,13 +46,22 @@ const EducationalInstitute = () => {
           "/main/educational-institution/get-institution"
         );
         setInstitutions(data.getData || []);
-      } catch (error) {
-        console.error("Fetch Error:", error);
+      } catch (error: any) {
+        const errorMessage =
+          error?.response?.data?.message ||
+          error?.message ||
+          "ডাটা আনতে সমস্যা হয়েছে! দয়া করে আবার চেষ্টা করুন।";
+
+        // if (__DEV__) {
+        //   console.error("Fetch Error:", errorMessage);
+        // }
+
         Toast.show({
           type: "error",
-          text1: "ডাটা আনতে সমস্যা হয়েছে! দয়া করে আবার চেষ্টা করুন।",
+          text1: errorMessage,
         });
-      } finally {
+      }
+      finally {
         setLoading(false);
       }
     };

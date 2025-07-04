@@ -7,6 +7,7 @@ import {
   StatusBar,
   ScrollView,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import { scale, verticalScale, moderateScale } from "react-native-size-matters";
 import { router } from "expo-router";
@@ -18,6 +19,7 @@ import PasswordComponent from "@/src/components/atoms/PasswordInput";
 import { GlobalContext } from "@/src/context/globalContext";
 import Toast from "react-native-toast-message";
 import api from "@/src/utils/api";
+import Loading from "@/src/components/atoms/Loading";
 
 const Login = () => {
   const { isUserLogin, setIsUserLogin, userState, setUserState } =
@@ -25,6 +27,7 @@ const Login = () => {
   const [hidePassword, setHidePassword] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   //handle submit for login
   const handleSubmit = async () => {
@@ -36,6 +39,7 @@ const Login = () => {
         });
         return;
       }
+      setLoading(true);
 
       const formData = new FormData();
       formData.append("email", email);
@@ -50,8 +54,9 @@ const Login = () => {
         setIsUserLogin(true)
         Toast.show({
           type: "success",
-          text1: data?.message,
+          text1: data.message,
         });
+        setIsUserLogin(true)
 
         setTimeout(() => {
           router.push("/(main)/home");
@@ -62,7 +67,7 @@ const Login = () => {
           text1: data?.message,
         });
       }
-    } catch (error) {
+    }  catch (error) {
       let errorMessage = "কিছু ভুল হয়েছে! দয়া করে আবার চেষ্টা করুন";
 
       if (error?.response?.data?.message) {
@@ -76,7 +81,16 @@ const Login = () => {
         text1: errorMessage,
       });
 
-      console.error("Error details:", error);
+      // ❌ REMOVE THIS LINE TO AVOID NOBRIDGE / REDBOX ERROR
+      // console.error("Error details:", error);
+
+      // ✅ Optional: Only log in development mode (safe)
+      if (__DEV__) {
+        console.log("Login error:", errorMessage);
+      }
+    } 
+    finally {
+      setLoading(false)
     }
   };
 
@@ -125,9 +139,20 @@ const Login = () => {
             পাসওয়ার্ড ভুলে গেছেন?
           </Text>
 
-          {/* Login Button */}
+         {/* Submit Button */}
           <ButtonComponent
-            buttonText="লগইন করুন"
+            buttonText={
+              loading ? (
+                <View style={{ flexDirection: "row", gap: 10 }}>
+                  <ActivityIndicator color="#fff" />
+                  <Text style={{ color: "#fff", fontSize: 16, fontWeight: "bold" }}>
+                    অপেক্ষা করুন
+                  </Text>
+                </View>
+              ) : (
+                "লগইন করুন"
+              )
+            }
             onPress={handleSubmit}
             style={{ width: "100%" }}
           />

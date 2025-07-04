@@ -6,6 +6,9 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
+  Platform,
+  Linking,
+  Alert
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import CustomNavbar from "@/src/components/atoms/CustomNavbar";
@@ -16,24 +19,79 @@ import AddItemIcon from "@/src/components/atoms/AddItemIcon";
 import moment from 'moment'
 import api from "@/src/utils/api";
 import AddHospital from "@/src/components/molecules/addHospital";
+import Toast from "react-native-toast-message";
 
 const Hospitals = () => {
   const [hospitals, setHospitals] = useState([]);
   const [openHospitalModal, setOpenHospitalModal] = useState(false);
   const [refresh, setRefresh] = useState(false);
 
+  //make phone call
+ const makePhoneCall = (phoneNumber: string) => {
+  if (!phoneNumber) {
+    Alert.alert("ফোন নাম্বার খালি রাখা যাবে না");
+    return;
+  }
+
+  const phoneUrl = `tel:${phoneNumber}`;
+
+  Linking.canOpenURL(phoneUrl)
+    .then((supported) => {
+      if (!supported) {
+        Alert.alert("আপনার ফোন এই নাম্বারে কল করতে পারছে না");
+      } else {
+        return Linking.openURL(phoneUrl);
+      }
+    })
+    .catch((err) => {
+      console.error("Dialer error", err);
+      Alert.alert("কোনো সমস্যা হয়েছে! পরে আবার চেষ্টা করুন");
+    });
+};
+
+
+  const openMapWithPlace = (place: string) => {
+  const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place)}`;
+
+  Linking.canOpenURL(url)
+    .then((supported) => {
+      if (supported) {
+        Linking.openURL(url);
+      } else {
+        Alert.alert("Google Maps খোলা যাচ্ছে না");
+      }
+    })
+    .catch((err) => {
+      Alert.alert("কিছু ভুল হয়েছে", err.message);
+    });
+};
+
   //fetch hospitals
-  useEffect(() => {
-    const fetchHospitals = async () => {
-      // const res = await fetch(
-      //   "http://10.1.1.108:3000/api/main/hospitals/get-hospitals"
-      // );
-      // const { getHospitalData } = await res.json();
+ useEffect(() => {
+  const fetchHospitals = async () => {
+    try {
       const { data } = await api.get("/main/hospitals/get-hospitals");
       setHospitals(data.getHospitalData);
-    };
-    fetchHospitals();
-  }, [refresh]);
+    } catch (error: any) {
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.message ||
+        "হাসপাতালের তথ্য আনতে সমস্যা হয়েছে!";
+
+      // if (__DEV__) {
+      //   console.error("Hospital fetch error:", message);
+      // }
+
+      Toast.show({
+        type: "error",
+        text1: errorMessage,
+      });
+    }
+  };
+
+  fetchHospitals();
+}, [refresh]);
+
 
   //format date
   const formatDate = (isoDate) => {
@@ -80,12 +138,15 @@ const Hospitals = () => {
             <TouchableOpacity
               activeOpacity={0.8}
               style={[styles.button, { backgroundColor: "#ff8000" }]}
+              onPress={() => openMapWithPlace(`${item.hospitalName}, ${item.address}`)}
+
             >
               <Text style={styles.buttonText}>গুগল ম্যাপ</Text>
             </TouchableOpacity>
             <TouchableOpacity
               activeOpacity={0.8}
               style={[styles.button, { backgroundColor: "#2754cc" }]}
+              onPress={() => makePhoneCall(item.hotlineNumber)}
             >
               <Text style={[styles.buttonText, { color: "#fff" }]}>হটলাইন</Text>
             </TouchableOpacity>
@@ -107,6 +168,7 @@ const Hospitals = () => {
         setOpenHospitalModal={setOpenHospitalModal}
         refresHospitals={refresHospitals}
       />
+      <Toast />
     </SafeAreaView>
   );
 };

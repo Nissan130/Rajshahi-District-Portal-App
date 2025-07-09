@@ -19,8 +19,8 @@ const GlobalContextProvider = ({children}) => {
         setUserState({ user: loginData.user, token: loginData.token });
         setIsUserLogin(true);
       }
-      console.log("Global Context: ", isUserLogin); 
-      console.log("Global Context: ", userState); 
+      // console.log("Global Context: ", isUserLogin); 
+      // console.log("Global Context: ", userState); 
     };
      checkAuth();
   }, [isUserLogin]);

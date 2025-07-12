@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "client",
-    "slug": "client",
+    "name": "Rajshahi District Portal",
+    "slug": "rajshahi-district-portal",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
@@ -9,14 +9,15 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.nissan130.rajshahidistrictportal"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.nissan130.client"
+      "package": "com.nissan130.rajshahidistrictportal"
     },
     "web": {
       "bundler": "metro",
@@ -43,7 +44,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "b198abb0-47be-44bd-b428-514b00b176a3"
+        "projectId": "4a420835-6762-437a-ac9f-9731efb0737b"
       }
     }
   }

@@ -10,14 +10,14 @@ import moment from 'moment';
 const data = [
   {
     id: "1",
-    fireServiceImage: require("@/src/assets/images/rajshahi_fireservice.png"),
+    fireServiceImage: require("@/src/assets/images/rajshahi_fireservice.jpg"),
     fireServiceName: "ফায়ার সার্ভিস ও সিভিল ডিফেন্স, রাজশাহী",
     address: "Rajpara",
     contact_no: "01771337896",
   },
   {
     id: "2",
-    fireServiceImage: require("@/src/assets/images/tanor_fireservice.png"),
+    fireServiceImage: require("@/src/assets/images/tanor_fireservice.jpeg"),
     fireServiceName: "Tanore Fire Station",
     address: "Rajpara",
     contact_no: "01609313886",

@@ -24,7 +24,7 @@ const data = [
     id: "4",
     title: "ডায়াগনস্টিক",
     keywords: ["diagnostic", "lab", "test", "blood", "ডায়াগনস্টিক", "lab test", "diagonostic", "diagnostik"],
-    image: require("@/src/assets/images/diagnostic.png"),
+    image: require("@/src/assets/images/diagnostic.jpg"),
     route: "/screens/diagnostics",
   },
   {
@@ -52,7 +52,7 @@ const data = [
     id: "8",
     title: "রেস্টুরেন্ট",
     keywords: ["restaurant", "food", "রেস্টুরেন্ট", "khaba", "khawa", "khaba dowa", "dining"],
-    image: require("@/src/assets/images/restuarent.png"),
+    image: require("@/src/assets/images/restuarent.jpg"),
     route: "/screens/restuarants",
   },
   {
@@ -66,7 +66,7 @@ const data = [
     id: "10",
     title: "ট্রেনের সময়সূচী",
     keywords: ["train", "rail", "schedule", "ট্রেন", "railway", "train schedule", "time"],
-    image: require("@/src/assets/images/train.png"),
+    image: require("@/src/assets/images/train.jpeg"),
     route: "/screens/trainSchedule",
   },
   {
@@ -80,14 +80,14 @@ const data = [
     id: "12",
     title: "দর্শনীয় স্থান",
     keywords: ["place", "tour", "visit", "tourist", "দর্শনীয়", "jayejaiga", "place to see"],
-    image: require("@/src/assets/images/touristPlace.png"),
+    image: require("@/src/assets/images/touristplace.jpeg"),
     route: "/screens/touristPlace",
   },
   {
     id: "13",
     title: "থানা পুলিশ",
     keywords: ["police", "station", "থানা", "security", "thana", "law", "police station"],
-    image: require("@/src/assets/images/police.png"),
+    image: require("@/src/assets/images/police.jpeg"),
     route: "/screens/policeStation",
   },
   {
@@ -122,7 +122,7 @@ const data = [
     id: "18",
     title: "বিদ্যুৎ অফিস",
     keywords: ["electric", "power", "office", "বিদ্যুৎ", "current", "bidyut", "palli bidyut"],
-    image: require("@/src/assets/images/electricity_office.png"),
+    image: require("@/src/assets/images/electricity_office.jpeg"),
     route: "/screens/electricOffice",
   },
   {
@@ -150,7 +150,7 @@ const data = [
     id: "22",
     title: "পার্লার",
     keywords: ["parlour", "beauty", "spa", "makeup", "পার্লার", "salon", "parlor"],
-    image: require("@/src/assets/images/parlour.png"),
+    image: require("@/src/assets/images/parlour.jpg"),
     route: "/screens/parlour",
   },
   {

@@ -14,7 +14,7 @@ const doctor_category_list = [
   {
     id: "3",
     title: "নিউরোলজিস্ট ",
-    image: require("@/src/assets/images/Neurologist.png"),
+    image: require("@/src/assets/images/neurologist.jpeg"),
     route: "./doctors/cardiologist",
   },
   {
@@ -25,7 +25,7 @@ const doctor_category_list = [
   {
     id: "5",
     title: "অর্থোপেডিক সার্জন",
-    image: require("@/src/assets/images/Orthopedic_Surgeon.png"),
+    image: require("@/src/assets/images/orthopedic_surgeon.jpeg"),
     route: "./doctors/cardiologist",
   },
   {
@@ -43,13 +43,13 @@ const doctor_category_list = [
   {
     id: "8",
     title: "এন্ডোক্রাইনোলজিস্ট ",
-    image: require("@/src/assets/images/Endocrinologist.png"),
+    image: require("@/src/assets/images/endocrinologist.jpeg"),
     route: "./doctors/cardiologist",
   },
   {
     id: "9",
     title: "গাইনোকোলজিস্ট ",
-    image: require("@/src/assets/images/Gynecologist.png"),
+    image: require("@/src/assets/images/gynecologist.jpeg"),
     route: "./doctors/cardiologist",
   },
   {
@@ -61,7 +61,7 @@ const doctor_category_list = [
   {
     id: "11",
     title: "চক্ষু বিশেষজ্ঞ",
-    image: require("@/src/assets/images/Ophthalmologist.png"),
+    image: require("@/src/assets/images/ophthalmologist.jpg"),
     route: "./doctors/cardiologist",
   },
   {
@@ -73,19 +73,19 @@ const doctor_category_list = [
   {
     id: "13",
     title: "মনোরোগ বিশেষজ্ঞ",
-    image: require("@/src/assets/images/Psychiatrist.png"),
+    image: require("@/src/assets/images/psychiatrist.jpeg"),
     route: "./doctors/cardiologist",
   },
   {
     id: "14",
     title: "অ্যাঞ্জিওলজিস্ট",
-    image: require("@/src/assets/images/Angiologist.png"),
+    image: require("@/src/assets/images/angiologist.jpeg"),
     route: "./doctors/cardiologist",
   },
   {
     id: "15",
     title: "পালমোনোলজিস্ট",
-    image: require("@/src/assets/images/Pulmonologist.png"),
+    image: require("@/src/assets/images/pulmonologist.jpeg"),
     route: "./doctors/cardiologist",
   },
 ];

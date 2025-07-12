@@ -1,6 +1,6 @@
 const cardiologist_list = [
   {
-    image: require("@/src/assets/images/cardiology_doctor_rais_mondol.png"),
+    image: require("@/src/assets/images/profile.png"),
     name: "ডঃ মোঃ রাইস উদ্দিন মন্ডল",
     experts:
       "কার্ডিওলজি, হৃদরোগ, রিউমেটিক জ্বর, উচ্চ রক্তচাপ এবং মেডিসিন বিশেষজ্ঞ",
@@ -10,7 +10,7 @@ const cardiologist_list = [
       "সহকারী অধ্যাপক, কার্ডিওলজি রাজশাহী মেডিকেল কলেজ ও  হাসপাতাল",
   },
   {
-    image: require("@/src/assets/images/cardiology_doctor_rakib_tusar.png"),
+    image: require("@/src/assets/images/profile.png"),
     name: "ডঃ মোঃ রাকিবুল হাসান তুষার",
     experts: "কার্ডিওলজি (হৃদরোগ, উচ্চ রক্তচাপ ও রিউমেটিক জ্বর) বিশেষজ্ঞ",
     educational_qualification:
@@ -18,7 +18,7 @@ const cardiologist_list = [
     present_workplace: "পপুলার ডায়াগনস্টিক সেন্টার লিমিটেড, রাজশাহী",
   },
   {
-    image: require("@/src/assets/images/cardiology_doctor_rakib_tusar.png"),
+    image: require("@/src/assets/images/profile.png"),
     name: "ডঃ মোঃ রাকিবুল হাসান তুষার",
     experts: "কার্ডিওলজি (হৃদরোগ, উচ্চ রক্তচাপ ও রিউমেটিক জ্বর) বিশেষজ্ঞ",
     educational_qualification:
